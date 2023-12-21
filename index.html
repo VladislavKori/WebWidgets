@@ -1,0 +1,55 @@
+<html>
+
+    <style>
+        * {margin: 0; padding: 0; box-sizing: border-box;}
+        
+    </style>
+    <body>
+
+        <div class="content">
+            <button id="add">Add Modal</button>
+            <button id="lock">Lock Modalas</button>
+            <button id="unlock">Unlock Modals</button>
+
+            <input id="widget-name" placeholder="widget name" />
+            <input id="width-size" placeholder="width size" />
+            <input id="height-size" placeholder="height size" />
+            <textarea id="code" placeholder="Write code"></textarea>
+
+            <button id="create-modal">Create modal</button>
+        </div>
+
+        <script>
+            const {ipcMain, ipcRenderer} = require('electron')
+            const path = require('path')
+            
+            const addButton = document.querySelector('#add');
+            const lockButton = document.querySelector('#lock');
+            const unlockButton = document.querySelector('#unlock')
+
+            const codeArea = document.querySelector('#code')
+            const widthSize = document.querySelector('#width-size')
+            const heightSize = document.querySelector('#height-size')
+            const createModal = document.querySelector('#create-modal')
+            const widgetName = document.querySelector('#widget-name')
+
+            createModal.addEventListener('click', async e => {
+                if (codeArea.value === "" || widthSize.value === "" || heightSize.value === "" || widgetName.value === "") return false
+
+                await ipcRenderer.send("createWidget", JSON.stringify({code: codeArea.value, width: widthSize.value, hieght: heightSize.value, name: widgetName.value}))
+            })
+            
+            addButton.addEventListener('click', async e => {
+                await ipcRenderer.send("openWidget")
+            })
+
+            lockButton.addEventListener('click', async e => {
+                await ipcRenderer.send("lockWidgets")
+            })
+
+            unlockButton.addEventListener('click', async e => {
+                await ipcRenderer.send("unlockWidgets")
+            })
+        </script>
+    </body>
+</html>

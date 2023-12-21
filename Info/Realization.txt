@@ -1,0 +1,10 @@
+- Window to bottom 
+Окно всегда ниже всех
+Ссылки: 
+- https://github.com/Armaldio/electron-bottom-most/tree/develop
+- https://www.youtube.com/watch?v=O4Rlq_NSkoM&ab_channel=FullstackDevelopment
+
+
+- Trays
+Ссылки
+- https://www.electronjs.org/docs/latest/tutorial/tray
