@@ -1,9 +1,15 @@
 import { BrowserWindow } from "electron";
 
-export const createModalWindow = () => {
+interface WidgetWindowProps {
+  width: string;
+  height: string;
+  entryFile: string;
+}
+
+export const createWidgetWindow = (props: WidgetWindowProps) => {
   const widgetWindow = new BrowserWindow({
-    width: 155,
-    height: 155,
+    width: Number(props.width),
+    height: Number(props.height),
     transparent: true,
     frame: false,
     type: "toolbar",
@@ -23,7 +29,7 @@ export const createModalWindow = () => {
     widgetWindow.setBackgroundColor("#00000000");
   });
 
-  widgetWindow.loadFile("./AppleTV/index.html");
+  widgetWindow.loadFile(props.entryFile);
 
   widgetWindow.setAlwaysOnTop(false, "modal-panel", 0);
 

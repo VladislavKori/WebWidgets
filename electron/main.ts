@@ -1,6 +1,7 @@
 import { app, BrowserWindow, ipcMain } from "electron";
 import path from "node:path";
-import { createModalWindow } from "./scripts/createModalWindow";
+import { getInstalledWidgets } from "./scripts/getInstalledWidgets";
+import { createWidgetWindow } from "./scripts/createWidget";
 
 process.env.DIST = path.join(__dirname, "../dist");
 process.env.VITE_PUBLIC = app.isPackaged
@@ -19,6 +20,7 @@ function createWindow() {
     resizable: false,
     webPreferences: {
       preload: path.join(__dirname, "preload.js"),
+      webSecurity: false,
     },
   });
 
@@ -35,12 +37,18 @@ function createWindow() {
   }
 }
 
-ipcMain.on("createModal", (e) => {
-  createModalWindow();
+ipcMain.on("createWidget", (e, args) => {
+  const widgetConfig = JSON.parse(args);
+  // console.log(widgetConfig);
+  createWidgetWindow({
+    width: widgetConfig.window.width,
+    height: widgetConfig.window.height,
+    entryFile: path.join(widgetConfig.path + widgetConfig.window.entryFile),
+  });
 });
 
-ipcMain.handle("getInstalled", (e) => {
-  return "123";
+ipcMain.handle("getInstalled", async (e) => {
+  return await getInstalledWidgets();
 });
 
 app.on("window-all-closed", () => {

@@ -1,0 +1,11 @@
+{
+    "name": "Clock",
+    "description": "The best clock widget",
+    "author": "Vladislav Kori",
+    "preview": "/assets/preview.png",
+    "window": {
+        "width": "195",
+        "height": "195",
+        "entryFile": "/index.html"
+    }
+}

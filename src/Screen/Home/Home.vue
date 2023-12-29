@@ -1,28 +1,37 @@
 <script lang="ts">
-import { defineComponent } from 'vue';
+import './Home.scss'
+import WidgetCard from '../../components/WidgetCard/WidgetCard.vue'
+import IWidget from '../../types/Widget'
 
-
-function getWidgetsInstalled() {
-    window.ipcRenderer.invoke("getInstalled").then(res => {
-        console.log(res)
-    })
-}
-
-export default defineComponent({
+export default {
+    data() {
+        return {
+            array: new Array<IWidget>(),
+        }
+    },
+    components: {
+        WidgetCard
+    },
     methods: {
-        getWidgetsInstalled
+        async getInstalled() {
+            const widgets = await window.ipcRenderer.invoke("getInstalled")
+            this.array = widgets
+        }
+    },
+    async created() {
+        this.getInstalled()
     }
-})
-
+}
 </script>
-(
+
 <template>
     <h1>Home</h1>
     <div>
         <h3>Instsalled</h3>
-        <button @click="getWidgetsInstalled">Load</button>
     </div>
-    <div>
-
+    <div class="widgets__scroll">
+        <div class="widgets">
+            <WidgetCard v-for="item in array" v-bind="(item)" />
+        </div>
     </div>
 </template>
