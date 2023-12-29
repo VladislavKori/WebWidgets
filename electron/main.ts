@@ -2,15 +2,6 @@ import { app, BrowserWindow, ipcMain } from "electron";
 import path from "node:path";
 import { createModalWindow } from "./scripts/createModalWindow";
 
-// The built directory structure
-//
-// ├─┬─┬ dist
-// │ │ └── index.html
-// │ │
-// │ ├─┬ dist-electron
-// │ │ ├── main.js
-// │ │ └── preload.js
-// │
 process.env.DIST = path.join(__dirname, "../dist");
 process.env.VITE_PUBLIC = app.isPackaged
   ? process.env.DIST
@@ -46,6 +37,10 @@ function createWindow() {
 
 ipcMain.on("createModal", (e) => {
   createModalWindow();
+});
+
+ipcMain.handle("getInstalled", (e) => {
+  return "123";
 });
 
 app.on("window-all-closed", () => {
