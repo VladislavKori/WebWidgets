@@ -1,4 +1,5 @@
 export default interface Widget {
+  processId: undefined | string
   path: string;
   config: {
     name: string;

@@ -9,10 +9,12 @@
   },
   "dependencies": {
     "sass": "^1.69.5",
+    "uniqid": "^5.4.0",
     "vue": "^3.3.4",
     "vue-router": "^4.2.5"
   },
   "devDependencies": {
+    "@types/uniqid": "^5.3.4",
     "@vitejs/plugin-vue": "^4.3.4",
     "electron": "^26.1.0",
     "electron-builder": "^24.6.4",
