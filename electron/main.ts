@@ -3,6 +3,8 @@ import path from "node:path";
 import { getInstalledWidgets } from "./scripts/getInstalledWidgets";
 import { createWidgetWindow } from "./scripts/createWidget";
 import initWindowMenuHandler from "./scripts/windowsMenuHandler";
+import { IWidget } from "./types/widget";
+import { lockAllWidgets, unlockAllWidgets } from "./scripts/locker";
 
 process.env.DIST = path.join(__dirname, "../dist");
 process.env.VITE_PUBLIC = app.isPackaged
@@ -10,7 +12,9 @@ process.env.VITE_PUBLIC = app.isPackaged
   : path.join(process.env.DIST, "../public");
 
 let win: BrowserWindow | null;
-let modalWindows: Array<BrowserWindow> = [];
+export let modalWindows: Array<{ processId: string, widget: IWidget, ref: BrowserWindow }> = [];
+let allWidgetIsLock = false;
+
 const VITE_DEV_SERVER_URL = process.env["VITE_DEV_SERVER_URL"];
 
 function createWindow() {
@@ -41,18 +45,43 @@ function createWindow() {
 }
 
 ipcMain.on("createWidget", (e, args) => {
-  const widgetConfig = JSON.parse(args);
-  // console.log(widgetConfig);
-  createWidgetWindow({
-    width: widgetConfig.window.width,
-    height: widgetConfig.window.height,
-    entryFile: path.join(widgetConfig.path + widgetConfig.window.entryFile),
-  });
+  const widgetConfig: IWidget = JSON.parse(args);
+  const newWidget = createWidgetWindow(widgetConfig.path, widgetConfig.config);
+  modalWindows.push(newWidget)
+
+  if (allWidgetIsLock) lockAllWidgets()
+  else unlockAllWidgets()
 });
 
 ipcMain.handle("getInstalled", async (e) => {
   return await getInstalledWidgets();
 });
+
+ipcMain.handle("getWidgetsInProcess", e => {
+  return modalWindows.map(item => {
+    return { ...item.widget, processId: item.processId }
+  })
+})
+
+ipcMain.on("closeWidget", (e, args) => {
+  const { processId } = JSON.parse(args)
+  const item = modalWindows.filter(item => item.processId == processId)
+  item[0].ref.close()
+
+  // remove from array
+  modalWindows = modalWindows.filter(item => item.processId !== processId)
+})
+
+ipcMain.on("changeLockMod", (e, args) => {
+  allWidgetIsLock = !allWidgetIsLock;
+
+  if (allWidgetIsLock) lockAllWidgets()
+  else unlockAllWidgets()
+})
+
+ipcMain.handle("getLockMod", (e, args) => {
+  return allWidgetIsLock
+})
 
 app.on("window-all-closed", () => {
   if (process.platform !== "darwin") {
