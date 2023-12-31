@@ -2,6 +2,7 @@ import { app, BrowserWindow, ipcMain } from "electron";
 import path from "node:path";
 import { getInstalledWidgets } from "./scripts/getInstalledWidgets";
 import { createWidgetWindow } from "./scripts/createWidget";
+import initWindowMenuHandler from "./scripts/windowsMenuHandler";
 
 process.env.DIST = path.join(__dirname, "../dist");
 process.env.VITE_PUBLIC = app.isPackaged
@@ -15,14 +16,16 @@ const VITE_DEV_SERVER_URL = process.env["VITE_DEV_SERVER_URL"];
 function createWindow() {
   win = new BrowserWindow({
     icon: path.join(process.env.VITE_PUBLIC, "electron-vite.svg"),
-    width: 1200,
-    height: 800,
-    resizable: false,
+    minWidth: 1200,
+    minHeight: 800,
+    titleBarStyle: "hidden",
     webPreferences: {
       preload: path.join(__dirname, "preload.js"),
       webSecurity: false,
     },
   });
+
+  initWindowMenuHandler(win);
 
   // Test active push message to Renderer-process.
   win.webContents.on("did-finish-load", () => {

@@ -11,6 +11,10 @@ body,
   height: 100%;
 }
 
+body {
+  overflow: hidden;
+}
+
 :root {
   --text-color: #262626;
 }

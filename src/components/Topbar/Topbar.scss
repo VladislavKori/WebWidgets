@@ -1,0 +1,29 @@
+.topbar {
+  height: 40px;
+  background: #444444;
+  display: flex;
+  justify-content: flex-end;
+  -webkit-app-region: drag;
+
+  &__btn {
+    height: 100%;
+    aspect-ratio: 1.5 / 1;
+    background: none;
+    border: none;
+    outline: none;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    -webkit-app-region: none;
+
+    &:hover {
+      background: #ffffff3c;
+    }
+
+    &_close {
+      &:hover {
+        background: #ff38383c;
+      }
+    }
+  }
+}
