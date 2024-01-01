@@ -1,3 +1,7 @@
-.lock-btn {
-    cursor: pointer;
+.lock {
+  padding: 15px;
+
+  &__btn {
+    font-family: var(--font1);
+  }
 }

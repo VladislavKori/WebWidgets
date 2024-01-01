@@ -26,7 +26,8 @@ export default defineComponent({
 </script>
 
 <template>
-    <div @click="changeLockMod" class="lock-btn" v-if="isLock">Unlock</div>
-    
-    <div @click="changeLockMod" class="lock-btn" v-if="!isLock">Lock</div>
+    <div class="lock">
+        <div @click="changeLockMod" class="lock__btn" v-if="isLock">Unlock</div>
+        <div @click="changeLockMod" class="lock__btn" v-if="!isLock">Lock</div>
+    </div>
 </template>

@@ -5,16 +5,17 @@ import Locker from '../Locker/Locker.vue'
 export default {
     name: "Sidebar",
     components: {
-        Locker
+        Locker,
     }
 }
 </script>
 
 <template>
     <aside class="sidebar">
-        <router-link to="/">Home</router-link>
-        <router-link to="/settings">Settings</router-link>
-        <router-link to="/inprocess">In Process</router-link>
-        <Locker />
+        <div class="sidebar__content">
+            <router-link class="sidebar__link" to="/">Home</router-link>
+            <router-link class="sidebar__link" to="/settings">Settings</router-link>
+            <router-link class="sidebar__link" to="/inprocess">In Process</router-link>
+        </div>
     </aside>
 </template>

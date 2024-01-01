@@ -8,7 +8,9 @@ import Topbar from './components/Topbar/Topbar.vue';
   <div class="container">
     <Sidebar />
     <div class="screen-wrapper">
-      <router-view></router-view>
+      <div class="screen-scroller">
+        <router-view></router-view>
+      </div>
     </div>
   </div>
 </template>
