@@ -1,10 +1,11 @@
-import { BrowserWindow } from "electron";
 import path from "node:path";
-import uniqid from 'uniqid';
+import uniqid from "uniqid";
+import { BrowserWindow } from "electron";
+import { CreateWidgetReturn, ICreateWidget } from "../../types/Process";
 
-import { IWidget } from "../types/widget";
+export function createWidget(params: ICreateWidget): CreateWidgetReturn {
+  const { folderPath, config } = params;
 
-export const createWidgetWindow = (widgetDir: string, config: IWidget["config"]) => {
   const widgetWindow = new BrowserWindow({
     width: Number(config.window.width),
     height: Number(config.window.height),
@@ -27,16 +28,15 @@ export const createWidgetWindow = (widgetDir: string, config: IWidget["config"])
     widgetWindow.setBackgroundColor("#00000000");
   });
 
-  widgetWindow.loadFile(path.join(widgetDir + config.window.entryFile));
+  widgetWindow.loadFile(path.join(folderPath + config.window.entryFile));
 
   widgetWindow.setAlwaysOnTop(false, "modal-panel", 0);
 
   return {
     processId: uniqid(),
-    widget: {
-      path: widgetDir,
-      config: config
-    },
-    ref: widgetWindow
+    config,
+    lock: false,
+    folderPath,
+    ref: widgetWindow,
   };
-};
+}

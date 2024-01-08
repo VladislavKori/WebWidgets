@@ -1,12 +1,13 @@
 <script lang="ts">
 import './Installed.scss'
 import WidgetCardVue from '../../WidgetCard/WidgetCard.vue';
+import { SearchWidgetReturn } from '../../../../types/Installation';
 
 export default {
     name: "Installed",
     data() {
         return {
-            array: new Array<IWidget>(),
+            array: new Array<SearchWidgetReturn>(),
         }
     },
     methods: {
@@ -26,10 +27,10 @@ export default {
 
 <template>
     <div class="installed">
-
+        <h1>Installed</h1>
         <ul class="installed__list">
-            <WidgetCardVue v-for="item in array" v-bind="item" />
             <WidgetCardVue v-for="item in array" v-bind="item" />
         </ul>
     </div>
 </template>
+../../../../electron/types/types

@@ -1,0 +1,103 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+@font-face {
+  font-family: SF Pro Text;
+  src: url("./assets/FontsFree-Net-SFProDisplay-Bold.ttf") format("opentype");
+  font-weight: 700;
+  font-style: bold;
+}
+
+.wrapper {
+  padding: 16px;
+  display: flex;
+  width: 329px;
+  height: 155px;
+  border-radius: 21.67px;
+  background: #fff;
+  gap: 30px;
+}
+
+.rigtbar {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  -webkit-app-region: drag;
+}
+
+.type {
+  font-family: SF Pro Text;
+  color: #ffa11d;
+  font-size: 17px;
+  font-style: normal;
+  font-weight: 700;
+  line-height: normal;
+}
+
+.date {
+  font-family: SF Pro Text;
+  color: #000;
+  font-size: 24px;
+  font-style: normal;
+  font-weight: 700;
+  line-height: normal;
+}
+
+.rigtbar__menu {
+  background: none;
+  border: none;
+  display: flex;
+  align-items: center;
+  width: 32px;
+  height: 32px;
+  cursor: pointer;
+  -webkit-app-region: none;
+}
+
+.content {
+  display: flex;
+  flex-direction: column;
+  overflow-y: auto;
+  width: 100%;
+}
+
+.content::-webkit-scrollbar {
+  display: none;
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+.content__item {
+  padding: 10px 0;
+  border-bottom: 1px solid #dcdcdc;
+}
+
+.content__item:first-child {
+  padding-top: 0px;
+}
+
+.content__item:last-child {
+  padding-bottom: 0px;
+  border-bottom: none;
+}
+
+.item__title {
+  color: #000;
+  font-family: SF Pro Text;
+  font-size: 15px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
+}
+
+.item__date {
+  color: rgba(0, 0, 0, 0.5);
+  font-family: SF Pro Text;
+  font-size: 12px;
+  font-style: normal;
+  font-weight: 500;
+  line-height: normal;
+}

@@ -1,0 +1,28 @@
+.inprocess {
+  &__content {
+    height: 40vh;
+    display: flex;
+    flex-direction: column;
+    row-gap: 14px;
+    overflow-y: auto;
+  }
+
+  &__header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  &__lock {
+    width: 30px;
+    height: 30px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    &-icon {
+      width: 100%;
+      height: auto;
+    }
+  }
+}

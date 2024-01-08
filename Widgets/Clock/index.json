@@ -1,11 +1,11 @@
 {
-    "name": "Clock",
+    "name": "Reminders",
     "description": "The best clock widget",
     "author": "Vladislav Kori",
     "preview": "/assets/preview.png",
     "window": {
-        "width": "195",
-        "height": "195",
+        "width": "329",
+        "height": "155",
         "entryFile": "/index.html"
     }
 }

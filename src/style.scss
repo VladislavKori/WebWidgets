@@ -31,12 +31,15 @@ body {
   width: 100%;
   height: 100%;
   overflow-y: auto;
+  display: flex;
+  justify-content: center;
 }
 
 .screen-scroller {
   padding: 15px;
   display: flex;
   flex-direction: column;
+  width: 900px;
 }
 
 h1,
