@@ -1,5 +1,5 @@
 import { BrowserWindow } from "electron";
-import { CreateWidgetReturn } from "../../types/Process";
+import { CreateWidgetReturn, IProcessWidget } from "../../types/Process";
 
 /**
  * Renderer Process notificator
@@ -14,21 +14,18 @@ export async function processNotificate(
   data: CreateWidgetReturn[],
   allIsLock: boolean
 ): Promise<void> {
-  // need fix this [START]
-  let newdata = data.map((item) => {
-    return {
-      processId: item.processId,
-      config: item.config,
-      lock: item.lock,
-      folderPath: item.folderPath,
-    };
-  });
-  // need fix this [END]
+
+  // Convert array of object into IProcessWidget[], so we only remove "ref" field
+  let processedData: IProcessWidget[] = [...data.map(item => {
+    const object: CreateWidgetReturn = Object.assign({}, item)
+    delete object.ref;
+    return object
+  })]
 
   try {
     await win?.webContents.postMessage(
       "widgets-in-process",
-      JSON.stringify({ allIsLock, wins: newdata })
+      JSON.stringify({ allIsLock, wins: processedData })
     );
   } catch (err) {
     console.log("ERROR", err);

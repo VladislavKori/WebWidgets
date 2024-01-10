@@ -11,7 +11,7 @@ export interface CreateWidgetReturn {
   config: IWidgetConfig;
   lock: boolean;
   folderPath: string;
-  ref: BrowserWindow;
+  ref: BrowserWindow | undefined;
 }
 
 export type IProcessWidget = Omit<CreateWidgetReturn, "ref">;
