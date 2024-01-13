@@ -4,7 +4,8 @@ export function changeLockStatusById(widget: CreateWidgetReturn): void {
   const state = widget.lock;
 
   widget.lock = !state;
-  widget.ref.setIgnoreMouseEvents(!state);
+
+  widget.ref?.setIgnoreMouseEvents(!state);
 }
 
 /**
@@ -21,6 +22,6 @@ export function changeLockStatusForAll(
     item.lock = allIsLock;
     console.log("locker ", item.ref, allIsLock);
     console.log("locker1 ", widgets);
-    item.ref.setIgnoreMouseEvents(allIsLock);
+    item.ref?.setIgnoreMouseEvents(allIsLock);
   });
 }

@@ -54,7 +54,9 @@ class ProcessController {
       const item = this.store.widgetsInProcess.filter(
         (item) => item.processId === processId
       );
-      item[0].ref.close();
+
+      item[0].ref?.close();
+
       this.store.widgetsInProcess = this.store.widgetsInProcess.filter(
         (item) => item.processId !== processId
       );

@@ -14,6 +14,7 @@ export default {
         async getInstalled() {
             const widgets = await window.ipcRenderer.invoke("getInstalled")
             this.array = widgets
+            console.log(this.array)
         }
     },
     components: {
@@ -33,4 +34,3 @@ export default {
         </ul>
     </div>
 </template>
-../../../../electron/types/types

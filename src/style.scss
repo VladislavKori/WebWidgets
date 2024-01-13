@@ -1,4 +1,4 @@
-@import url("https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;500;600&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Montserrat&display=swap");
 * {
   margin: 0;
   padding: 0;
@@ -11,35 +11,43 @@ body,
   height: 100%;
 }
 
+#app {
+  display: flex;
+  flex-direction: column;
+}
+
 body {
-  overflow: hidden;
+  background: #fff;
 }
 
 :root {
   --text-color: #262626;
-  --font1: "Open Sans", sans-serif;
+  --font1: "Montserrat", sans-serif;
 }
 
 .container {
   display: flex;
   align-items: flex-start;
-  height: 100%;
 }
 
 .screen-wrapper {
-  position: relative;
   width: 100%;
-  height: 100%;
-  overflow-y: auto;
+  height: calc(100vh - 40px);
   display: flex;
   justify-content: center;
+  overflow-y: auto;
+
+  &::-webkit-scrollbar {
+    display: none;
+  }
 }
 
-.screen-scroller {
-  padding: 15px;
+.screen {
+  padding: 25px 0;
   display: flex;
   flex-direction: column;
-  width: 900px;
+  width: 700px;
+  row-gap: 40px;
 }
 
 h1,
@@ -52,7 +60,7 @@ h5 {
 }
 
 h1 {
-  font-size: 32px;
+  font-size: 28px;
 }
 
 h2 {

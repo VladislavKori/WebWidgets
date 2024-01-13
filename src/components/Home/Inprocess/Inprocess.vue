@@ -5,6 +5,7 @@ import LockKeyholeUnlocked from '../../../assets/Inprocess/lock-keyhole-unlocked
 import InprocessCard from './InprocessCard/InprocessCard.vue'
 import { ref, Ref } from 'vue'
 import { IProcessWidget } from '../../../../types/Process'
+import ButtonWithPopup from '../../Elements/ButtonWithPopup/ButtonWithPopup.vue'
 
 export default {
     name: "InProcess",
@@ -16,7 +17,8 @@ export default {
     components: {
         LockKeyhole,
         LockKeyholeUnlocked,
-        InprocessCard
+        InprocessCard,
+        ButtonWithPopup
     },
     methods: {
         async changeLockStatusById(id: string, doLock: boolean) {
@@ -38,13 +40,13 @@ export default {
     async created() {
         await this.getWidgetsInProcess()
         await this.listenWidgetsInProcess()
+
     },
     setup() {
         const widgets = ref([]) as Ref<IProcessWidget[]>
 
         function updateState(array: IProcessWidget[]) {
             widgets.value = array
-            console.log(widgets.value)
         }
 
         return {
@@ -58,16 +60,24 @@ export default {
 <template>
     <div class="inprocess">
         <header class="inprocess__header">
-            <h1>In Process</h1>
-            <button @click="changeLockStatusForAllWidgets" v-if="allWidgetsLock" class="inprocess__lock">
-                <LockKeyhole class="inprocess__lock-icon" />
-            </button>
-            <button @click="changeLockStatusForAllWidgets" v-if="!allWidgetsLock" class="inprocess__lock">
-                <LockKeyholeUnlocked class="inprocess__lock-icon" />
-            </button>
+            <h1>Active</h1>
+            <ButtonWithPopup>
+                <div class="inprocess__settings-item">
+                    <button @click="changeLockStatusForAllWidgets" v-if="allWidgetsLock" class="inprocess__lock">
+                        <LockKeyhole class="inprocess__lock-icon" />
+                        Unlock
+                    </button>
+                    <button @click="changeLockStatusForAllWidgets" v-if="!allWidgetsLock" class="inprocess__lock">
+                        <LockKeyholeUnlocked class="inprocess__lock-icon" />
+                        Lock
+                    </button>
+                </div>
+            </ButtonWithPopup>
         </header>
         <div class="inprocess__content">
-            <h5 v-if="widgets.length === 0">Is Empty</h5>
+            <div v-if="widgets.length === 0" class="inprocess__empty">
+                <h3>Is Empty...</h3>
+            </div>
             <InprocessCard v-for="(item, index) in widgets" :key="index" v-bind="item" />
         </div>
     </div>

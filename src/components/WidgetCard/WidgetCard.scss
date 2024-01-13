@@ -1,29 +1,29 @@
 .card {
   display: flex;
   flex-direction: column;
-  gap: 10px;
+  row-gap: 20px;
   padding: 10px;
-  border-radius: 5px;
-  background: #e3e3e3;
+  border-radius: 10px;
+  background: #f7f7f7;
 
   &__preview {
     width: 100%;
+    height: 140px;
     aspect-ratio: 1 / 1;
     border-radius: 10px;
     display: flex;
     align-items: center;
     justify-content: center;
-
-    & img {
-      width: 100%;
-      height: 100%;
-    }
+    overflow: hidden;
+    background: gray;
   }
 
   &__subtitle {
-    font-family: "Roboto", sans-serif;
-    font-size: 14px;
-    color: var(--text-color);
+    font-family: var(--font1);
+    color: #aeaeae;
+    font-size: 10px;
+    font-weight: 400;
+    line-height: normal;
   }
 
   &__content {
@@ -31,6 +31,20 @@
     flex-direction: column;
     align-items: flex-start;
     gap: 5px;
+
+    & h3 {
+      font-size: 14px;
+      font-weight: 400;
+    }
+  }
+
+  &__btns {
+    margin-top: 20px;
+    display: flex;
+    align-items: center;
+    width: 100%;
+    justify-content: space-between;
+    column-gap: 15px;
   }
 
   &__btn {
@@ -47,18 +61,18 @@
     transition: all 0.2s ease-in-out;
 
     &_uninstall {
-      background: rgb(248, 116, 116);
+      background: #ff9f9f;
 
       &:hover {
-        background: rgb(253, 55, 55);
+        background: #ff7272;
       }
     }
 
     &_create {
-      background: rgb(82, 82, 255);
+      background: rgb(235, 235, 235);
 
       &:hover {
-        background: rgb(15, 15, 242);
+        background: rgb(200, 200, 200);
       }
     }
   }

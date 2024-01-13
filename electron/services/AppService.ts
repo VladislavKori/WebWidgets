@@ -16,7 +16,7 @@ const isProdMode: boolean = import.meta.env.MODE === "production";
  */
 export function createMainWindow(callback?: Function | undefined) {
   const win = new BrowserWindow({
-    icon: path.join(process.env.VITE_PUBLIC, "electron-vite.svg"),
+    icon: path.join(process.env.VITE_PUBLIC, "logo64x64.png"),
     minWidth: 1200,
     minHeight: 800,
     titleBarStyle: isProdMode ? "hidden" : "default",

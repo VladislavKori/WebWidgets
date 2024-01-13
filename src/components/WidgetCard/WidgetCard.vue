@@ -32,10 +32,12 @@ export default defineComponent({
             <img :src="folderPath + config.preview" alt="preview" />
         </div>
         <div class="card__content">
-            <h2 class="card__title">{{ config.name }}</h2>
+            <h3 class="card__title">{{ config.name }}</h3>
             <p class="card__subtitle">{{ config.description }}</p>
-            <button class="card__btn card__btn_uninstall" @click="uninstallWidget()">Uninstall</button>
-            <button class="card__btn card__btn_create" @click="createWidget">Create</button>
+            <div class="card__btns">
+                <button class="card__btn card__btn_create" @click="createWidget">Create</button>
+                <button class="card__btn card__btn_uninstall" @click="uninstallWidget()">Uninstall</button>
+            </div>
         </div>
     </div>
 </template>
