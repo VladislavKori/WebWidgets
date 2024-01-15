@@ -4,6 +4,9 @@ import openExplorer from "open-file-explorer";
 import { BrowserWindow } from "electron";
 import { CreateWidgetReturn, ICreateWidget } from "../../types/Process";
 
+import SWD from "swd";
+// import SWD from "../custom-packages/window-to-bottom";
+
 const isProdMode: boolean = import.meta.env.MODE === "production";
 
 export function createWidget(params: ICreateWidget): CreateWidgetReturn {
@@ -31,9 +34,16 @@ export function createWidget(params: ICreateWidget): CreateWidgetReturn {
     widgetWindow.setBackgroundColor("#00000000");
   });
 
-  widgetWindow.loadFile(path.join(folderPath + config.window.entryFile));
+  widgetWindow.on("ready-to-show", () => {
+    const hwnd = widgetWindow
+      .getNativeWindowHandle()
+      .readUInt32LE()
+      .toString(16);
+    SWD.toBottom(hwnd);
+    // SWD.initListener(hwnd);
+  });
 
-  widgetWindow.setAlwaysOnTop(false, "modal-panel", 0);
+  widgetWindow.loadFile(path.join(folderPath + config.window.entryFile));
 
   return {
     processId: uniqid(),

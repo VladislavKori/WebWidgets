@@ -1,0 +1,3 @@
+[submodule "packages/window-to-bottom"]
+	path = packages/window-to-bottom
+	url = https://github.com/VladislavKori/window-to-bottom

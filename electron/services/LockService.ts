@@ -20,8 +20,6 @@ export function changeLockStatusForAll(
 ): void {
   widgets.map((item) => {
     item.lock = allIsLock;
-    console.log("locker ", item.ref, allIsLock);
-    console.log("locker1 ", widgets);
     item.ref?.setIgnoreMouseEvents(allIsLock);
   });
 }

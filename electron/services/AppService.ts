@@ -26,6 +26,9 @@ export function createMainWindow(callback?: Function | undefined) {
     },
   });
 
+  //  The platform-specific handle of the window.
+  // console.log("this", win.getNativeWindowHandle());
+
   ipcMain.on("close", (_) => {
     win.hide();
   });
