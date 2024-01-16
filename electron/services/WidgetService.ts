@@ -3,8 +3,8 @@ import uniqid from "uniqid";
 import openExplorer from "open-file-explorer";
 import { BrowserWindow } from "electron";
 import { CreateWidgetReturn, ICreateWidget } from "../../types/Process";
-
 import SWD from "swd";
+
 // import SWD from "../custom-packages/window-to-bottom";
 
 const isProdMode: boolean = import.meta.env.MODE === "production";
@@ -40,7 +40,7 @@ export function createWidget(params: ICreateWidget): CreateWidgetReturn {
       .readUInt32LE()
       .toString(16);
     SWD.toBottom(hwnd);
-    // SWD.initListener(hwnd);
+    SWD.initListener(hwnd);
   });
 
   widgetWindow.loadFile(path.join(folderPath + config.window.entryFile));
