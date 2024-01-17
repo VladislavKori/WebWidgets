@@ -2,10 +2,6 @@ import { ipcMain } from "electron";
 import { getInstalledWidgets } from "../services/InstallationService";
 import Store from "./StoreController";
 import { SearchWidgetReturn } from "../../types/Installation";
-import {
-  getWidgetsFolder,
-  openFolderInFileExplorer,
-} from "../services/WidgetService";
 
 class WidgetController {
   private store: Store;
@@ -15,6 +11,7 @@ class WidgetController {
   }
 
   public init(): void {
+    // handle - return installed widgets
     ipcMain.handle("getInstalled", (_) => {
       const installedWidgets: SearchWidgetReturn[] = getInstalledWidgets();
 
@@ -23,16 +20,6 @@ class WidgetController {
 
       // send installed widgets on front-end
       return installedWidgets;
-    });
-
-    // handle - getWidgetsFolder
-    ipcMain.handle("get-widgets-folder", (_) => {
-      return getWidgetsFolder();
-    });
-
-    // handle - openWidgetsFolder
-    ipcMain.handle("open-widget-folder", (_) => {
-      openFolderInFileExplorer(getWidgetsFolder());
     });
 
     // handle - installWidget

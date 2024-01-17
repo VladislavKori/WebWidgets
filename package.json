@@ -43,7 +43,8 @@
     "files": [
       "dist",
       "dist-electron",
-      "Widgets"
+      "Widgets",
+      "conf"
     ],
     "mac": {
       "target": [

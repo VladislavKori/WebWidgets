@@ -6,23 +6,23 @@ export default {
     name: "WidgetsFolder",
     data() {
         return {
-            folder: ""
+            folders: new Array<string>()
         }
     },
     components: {
         OpenFolderIcon
     },
     methods: {
-        async getWidgetsFolder() {
-            const folder = await window.ipcRenderer.invoke("get-widgets-folder")
-            this.folder = folder;
+        async getWidgetFolders() {
+            const folders = await window.ipcRenderer.invoke("get-widget-folders")
+            this.folders = folders;
         },
-        async openWidgetsFolder() {
-            await window.ipcRenderer.invoke("open-widget-folder")
+        async openWidgetsFolder(folderPath: string) {
+            await window.ipcRenderer.invoke("open-widget-folder", JSON.stringify(folderPath))
         }
     },
     async created() {
-        await this.getWidgetsFolder()
+        await this.getWidgetFolders()
     }
 }
 </script>
@@ -30,9 +30,9 @@ export default {
 <template>
     <div class="widgetsFolder">
         <h3>Widgets Folder</h3>
-        <div class="widgetsFolder__filed">
-            <p class="widgetsFolder__text">{{ folder }}</p>
-            <button class="widgetsFolder__openFolder" @click="openWidgetsFolder">
+        <div class="widgetsFolder__filed" v-for="folderPath in folders">
+            <p class="widgetsFolder__text">{{ folderPath }}</p>
+            <button class="widgetsFolder__openFolder" @click="openWidgetsFolder(folderPath)">
                 <OpenFolderIcon class="widgetsFolder__openFolder-icon" />
             </button>
         </div>
