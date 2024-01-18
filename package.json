@@ -34,7 +34,8 @@
     "appId": "WebWidgets",
     "asar": true,
     "asarUnpack": [
-      "./Widgets"
+      "./Widgets",
+      "./conf"
     ],
     "productName": "WebWidgets",
     "directories": {

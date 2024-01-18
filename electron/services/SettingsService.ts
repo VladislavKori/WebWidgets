@@ -1,7 +1,9 @@
 import path from "path";
 import { readFileSync } from "node:fs";
 
-const configurationPath = path.join(__dirname, "../conf/app.config.json");
+const isProdMode: boolean = import.meta.env.MODE === "production";
+const prodFolderPath = isProdMode ? "../../app.asar.unpacked" : "../";
+const configurationPath = path.join(__dirname,  prodFolderPath, "conf/app.config.json");
 
 export function getWidgetsFolderPathsFromConfig(): string[] {
     const value: string = readFileSync(

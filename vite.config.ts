@@ -6,6 +6,11 @@ import svgLoader from "vite-svg-loader";
 
 // https://vitejs.dev/config/
 export default defineConfig({
+  build: {
+    rollupOptions: {
+      external: ["swd"]
+    }
+  },
   plugins: [
     vue(),
     svgLoader(),
@@ -16,5 +21,5 @@ export default defineConfig({
       preload: { input: path.join(__dirname, "electron/preload.ts") },
       renderer: {},
     }),
-  ],
+  ]
 });

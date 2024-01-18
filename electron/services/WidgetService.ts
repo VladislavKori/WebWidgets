@@ -3,13 +3,8 @@ import uniqid from "uniqid";
 import openExplorer from "open-file-explorer";
 import { BrowserWindow } from "electron";
 import { CreateWidgetReturn, ICreateWidget } from "../../types/Process";
-<<<<<<< HEAD
 import { getWidgetsFolderPathsFromConfig } from "./SettingsService";
-=======
 import SWD from "swd";
-
-// import SWD from "../custom-packages/window-to-bottom";
->>>>>>> 5904b76071a50d55431ab63a020d9fe45446be83
 
 const isProdMode: boolean = import.meta.env.MODE === "production";
 
