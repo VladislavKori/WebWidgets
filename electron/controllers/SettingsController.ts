@@ -1,6 +1,7 @@
 import { ipcMain } from "electron";
 // import Store from "./StoreController";
-import { getAllWidgetsFolderPaths, openFolderInFileExplorer } from "../services/WidgetService";
+import { getAllWidgetsFolderPaths, openFolderInFileExplorer } from "../services/FileServices";
+import { addWidgetFolderPathToConfig, removeWidgetFolderPathFromConfig } from "../services/SettingsService";
 
 class SettingsController {
     // private store: Store;
@@ -22,13 +23,15 @@ class SettingsController {
         });
 
         // handle - set new path
-        ipcMain.handle("add-widget-folder", (_) => {
-
+        ipcMain.handle("add-widget-folder", (_, args) => {
+            const path: string = JSON.parse(args);
+            addWidgetFolderPathToConfig(path);
         })
 
         // handle - remove folder path
-        ipcMain.handle("remove-folder-path", (_) => {
-
+        ipcMain.handle("remove-folder-path", (_, args) => {
+            const path: string = JSON.parse(args);
+            removeWidgetFolderPathFromConfig(path);
         })
     }
 }
