@@ -4,7 +4,9 @@ import openExplorer from "open-file-explorer";
 import { BrowserWindow } from "electron";
 import { CreateWidgetReturn, ICreateWidget } from "../../types/Process";
 import { getWidgetsFolderPathsFromConfig } from "./SettingsService";
-import SWD from "swd";
+
+// @ts-ignore
+import SWD from "../../packages/electron-swd";
 
 const isProdMode: boolean = import.meta.env.MODE === "production";
 
@@ -60,7 +62,7 @@ export function getDefaultWidgetsFolderPath(): string {
 }
 
 export function getAllWidgetsFolderPaths(): string[] {
-  const paths: string[] = getWidgetsFolderPathsFromConfig()
+  const paths: string[] = getWidgetsFolderPathsFromConfig();
   const defaultFolderPath: string = getDefaultWidgetsFolderPath();
   return [defaultFolderPath, ...paths];
 }
