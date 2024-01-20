@@ -1,6 +1,6 @@
 import { searchWidgetInFolder } from "./SearchService";
 import { SearchWidgetReturn } from "../../types/Installation";
-import { getAllWidgetsFolderPaths } from "./WidgetService";
+import { getAllWidgetsFolderPaths } from "./FileServices";
 
 /**
  * Return widgets, who installed on PC
