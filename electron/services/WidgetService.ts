@@ -33,15 +33,9 @@ export function createWidget(params: ICreateWidget): CreateWidgetReturn {
 
   widgetWindow.on("focus", () => {
     widgetWindow.setBackgroundColor("#00000000");
-  });
-
-  widgetWindow.on("ready-to-show", () => {
-    const hwnd = widgetWindow
-      .getNativeWindowHandle()
-      .readUInt32LE()
-      .toString(16);
-    SWD.toBottom(hwnd);
-    SWD.initListener(hwnd);
+    SWD.toBottom(
+      widgetWindow.getNativeWindowHandle().readUInt32LE().toString(16)
+    );
   });
 
   widgetWindow.loadFile(path.join(folderPath + config.window.entryFile));

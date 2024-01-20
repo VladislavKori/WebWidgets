@@ -1,17 +1,14 @@
 import { CreateWidgetReturn } from "../../types/Process";
 
 // @ts-ignore
-import LWS from "../../packages/electron-lws";
+import SWD from "../../packages/electron-swd";
 
 export function changeLockStatusById(widget: CreateWidgetReturn): void {
   const state = widget.lock;
 
   widget.lock = !state;
 
-  // widget.ref?.setIgnoreMouseEvents(!state);
-  const hwnd = widget.ref?.getNativeWindowHandle().readUInt32LE().toString(16);
-  console.log(hwnd);
-  LWS.lockWindow(hwnd);
+  widget.ref?.setMovable(state);
 }
 
 /**
@@ -26,7 +23,6 @@ export function changeLockStatusForAll(
 ): void {
   widgets.map((item) => {
     item.lock = allIsLock;
-    let hwnd = item.ref?.getNativeWindowHandle().readUInt32LE().toString(16);
-    LWS.lockWindow(hwnd);
+    item.ref?.setMovable(!allIsLock);
   });
 }
