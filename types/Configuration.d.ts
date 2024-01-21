@@ -1,3 +1,4 @@
 export interface IAppConfig {
-    paths: string[];
+  language: "en" | "ru";
+  paths: string[];
 }

@@ -3,34 +3,26 @@ import "./style.scss";
 import App from "./App.vue";
 import Router from "./Router/router";
 import { createI18n } from "vue-i18n";
+import { getLanguage } from "./utils/LangFunc";
 
 import EN from "./locale/EN.json";
 import RU from "./locale/RU.json";
 
-function getLanguageFromCookie(): string {
-  const langFromCookie = document.cookie.split("=")[1];
-  const defualtLang = "en";
+getLanguage().then((language: string) => {
+  const app = createApp(App);
 
-  if (!langFromCookie) {
-    document.cookie = `lang=${defualtLang}`;
-  }
+  const i18n = createI18n({
+    locale: language,
+    messages: {
+      en: EN,
+      ru: RU,
+    },
+  });
 
-  return langFromCookie || defualtLang;
-}
+  app.use(i18n);
+  app.use(Router);
 
-const i18n = createI18n({
-  locale: getLanguageFromCookie(),
-  messages: {
-    en: EN,
-    ru: RU,
-  },
-});
-
-createApp(App)
-  .use(i18n)
-  .use(Router)
-  .mount("#app")
-  .$nextTick(() => {
+  app.mount("#app").$nextTick(() => {
     // Remove Preload scripts loading
     postMessage({ payload: "removeLoading" }, "*");
 
@@ -39,3 +31,4 @@ createApp(App)
       console.log(message);
     });
   });
+});

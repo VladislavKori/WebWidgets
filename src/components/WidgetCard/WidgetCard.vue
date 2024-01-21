@@ -36,7 +36,7 @@ export default defineComponent({
             <p class="card__subtitle">{{ config.description }}</p>
             <div class="card__btns">
                 <button class="card__btn card__btn_create" @click="createWidget">{{ $t("buttons.create") }}</button>
-                <button class="card__btn card__btn_uninstall" @click="uninstallWidget">{{ $t("buttons.uninstall") }}</button>
+                <!-- <button class="card__btn card__btn_uninstall" @click="uninstallWidget">{{ $t("buttons.uninstall") }}</button> -->
             </div>
         </div>
     </div>

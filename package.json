@@ -46,7 +46,8 @@
       "dist",
       "dist-electron",
       "Widgets",
-      "conf"
+      "conf",
+      "packages"
     ],
     "mac": {
       "target": [

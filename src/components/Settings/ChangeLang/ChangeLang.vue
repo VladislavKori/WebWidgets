@@ -1,4 +1,5 @@
 <script lang="ts">
+import { setLanguage } from '../../../utils/LangFunc';
 import './ChangeLang.scss'
 
 export default {
@@ -10,13 +11,13 @@ export default {
     },
     methods: {
         changeLang(lang: string) {
-            document.cookie = "lang=" + lang;
-            this.lang = lang;
-            window.location.reload();
+            this.$i18n.locale = lang;
+            this.lang = this.$i18n.locale;
+            setLanguage(lang);
         }
     },
     mounted() {
-        this.lang = document.cookie.split('=')[1]
+        this.lang = this.$i18n.locale
     }
 }
 </script>
