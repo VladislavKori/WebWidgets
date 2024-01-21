@@ -60,23 +60,23 @@ export default {
 <template>
     <div class="inprocess">
         <header class="inprocess__header">
-            <h1>Active</h1>
+            <h1>{{ $t('titles.active') }}</h1>
             <ButtonWithPopup>
                 <div class="inprocess__settings-item">
                     <button @click="changeLockStatusForAllWidgets" v-if="allWidgetsLock" class="inprocess__lock">
                         <LockKeyhole class="inprocess__lock-icon" />
-                        Unlock
+                        {{ $t('locker.unlock') }}
                     </button>
                     <button @click="changeLockStatusForAllWidgets" v-if="!allWidgetsLock" class="inprocess__lock">
                         <LockKeyholeUnlocked class="inprocess__lock-icon" />
-                        Lock
+                        {{ $t('locker.lock') }}
                     </button>
                 </div>
             </ButtonWithPopup>
         </header>
         <div class="inprocess__content">
             <div v-if="widgets.length === 0" class="inprocess__empty">
-                <h3>Is Empty...</h3>
+                <h3>{{ $t('texts.empty') }}</h3>
             </div>
             <InprocessCard v-for="(item, index) in widgets" :key="index" v-bind="item" />
         </div>

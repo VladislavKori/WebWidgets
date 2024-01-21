@@ -28,7 +28,7 @@ export default {
 
 <template>
     <div class="installed">
-        <h1>Installed</h1>
+        <h1>{{ $t("titles.installed") }}</h1>
         <ul class="installed__list">
             <WidgetCardVue v-for="item in array" v-bind="item" />
         </ul>

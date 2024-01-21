@@ -1,0 +1,33 @@
+.change-lang {
+  display: flex;
+  flex-direction: column;
+  row-gap: 10px;
+
+  & h3 {
+    font-size: 24px;
+    font-weight: 400;
+  }
+
+  &__btns {
+    display: flex;
+    align-items: center;
+    border-radius: 10px;
+    overflow: hidden;
+  }
+
+  &__button {
+    width: 100%;
+    padding: 10px 0;
+    border: none;
+    background: rgb(244, 244, 244);
+    font-family: var(--font1);
+
+    &:hover {
+      background: rgb(230, 230, 230);
+    }
+  }
+}
+
+.change-lang__button.active {
+  background: rgb(213, 213, 213);
+}

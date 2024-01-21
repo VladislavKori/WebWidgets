@@ -29,7 +29,7 @@ export default {
 
 <template>
     <div class="widgetsFolder">
-        <h3>Widgets Folder</h3>
+        <h3>{{ $t('titles.widgetFolders') }}</h3>
         <div class="widgetsFolder__filed" v-for="folderPath in folders">
             <p class="widgetsFolder__text">{{ folderPath }}</p>
             <button class="widgetsFolder__openFolder" @click="openWidgetsFolder(folderPath)">

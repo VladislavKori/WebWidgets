@@ -1,0 +1,21 @@
+{
+    "titles": {
+        "choseLang": "Языки",
+        "widgetFolders": "Папки виджетов",
+        "settings": "Настройки",
+        "home": "Главная",
+        "active": "Активные",
+        "installed": "Установленные"
+    },
+    "texts": {
+        "empty": "Тут пока что ничего нет"
+    },
+    "locker": {
+        "lock": "Блокировать",
+        "unlock": "Разблокировать"
+    },
+    "buttons": {
+        "uninstall": "Удалить",
+        "create": "Создать"
+    }
+}

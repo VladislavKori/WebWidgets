@@ -13,8 +13,8 @@ export default {
 <template>
     <aside class="sidebar">
         <div class="sidebar__content">
-            <router-link class="sidebar__link" to="/">Home</router-link>
-            <router-link class="sidebar__link" to="/settings">Settings</router-link>
+            <router-link class="sidebar__link" to="/">{{ $t('titles.home') }}</router-link>
+            <router-link class="sidebar__link" to="/settings">{{ $t('titles.settings') }}</router-link>
         </div>
     </aside>
 </template>

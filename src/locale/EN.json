@@ -1,0 +1,21 @@
+{
+    "titles": {
+        "choseLang": "Language",
+        "widgetFolders": "Widgets Folder",
+        "settings": "Settings",
+        "home": "Home",
+        "active": "Active",
+        "installed": "Installed"
+    },
+     "texts": {
+        "empty": "There's nothing here yet"
+    },
+    "locker": {
+        "lock": "Lock",
+        "unlock": "Unlock"
+    },
+    "buttons": {
+        "uninstall": "Uninstall",
+        "create": "Create"
+    }
+}
