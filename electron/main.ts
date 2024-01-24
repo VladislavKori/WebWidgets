@@ -12,7 +12,7 @@ const store = new Store();
 // Init controllers
 new WidgetController({ store }).init();
 new ProcessController({ store }).init();
-new SettingsController().init();
+new SettingsController({ store }).init();
 
 app.on("activate", () => {
   if (BrowserWindow.getAllWindows().length === 0) {

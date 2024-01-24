@@ -10,13 +10,18 @@ import {
   removeWidgetFolderPathFromConfig,
   saveConfiguration,
 } from "../services/SettingsService";
+import Store from "./StoreController";
+import {
+  disableDevModeForWidget,
+  enableDevModeForWidget,
+} from "../services/WidgetService";
 
 class SettingsController {
-  // private store: Store;
+  private store: Store;
 
-  // constructor({ store }: { store: Store }) {
-  //     this.store = store;
-  // }
+  constructor({ store }: { store: Store }) {
+    this.store = store;
+  }
 
   public init() {
     // handle - return folders path, where you save your widgets
@@ -53,6 +58,30 @@ class SettingsController {
     ipcMain.handle("get-language", (_) => {
       const config = getConfiguration();
       return config.language;
+    });
+
+    // handle - enable dev mode for modal windows
+    ipcMain.handle("enable-dev-mode", () => {
+      const widgets = this.store.widgetsInProcess;
+
+      // clear process widgets
+      this.store.widgetsInProcess = [];
+
+      widgets.map((item) => {
+        this.store.widgetsInProcess.push(enableDevModeForWidget(item));
+      });
+    });
+
+    // handle - disable dev mode for modal windows
+    ipcMain.handle("disable-dev-mode", () => {
+      const widgets = this.store.widgetsInProcess;
+
+      // clear process widgets
+      this.store.widgetsInProcess = [];
+
+      widgets.map((item) => {
+        this.store.widgetsInProcess.push(disableDevModeForWidget(item));
+      });
     });
   }
 }

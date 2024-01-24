@@ -11,6 +11,7 @@ export interface CreateWidgetReturn {
   config: IWidgetConfig;
   lock: boolean;
   folderPath: string;
+  isDevMode: boolean;
   ref: BrowserWindow | undefined;
 }
 

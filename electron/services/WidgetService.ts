@@ -6,6 +6,8 @@ import { CreateWidgetReturn, ICreateWidget } from "../../types/Process";
 // @ts-ignore
 import SWD from "../../packages/electron-swd";
 
+type WidgetModes = "dev" | "default";
+
 export function createWidget(params: ICreateWidget): CreateWidgetReturn {
   const { folderPath, config } = params;
 
@@ -13,13 +15,13 @@ export function createWidget(params: ICreateWidget): CreateWidgetReturn {
     width: Number(config.window.width),
     height: Number(config.window.height),
     transparent: true,
-    frame: false,
+    frame: true,
     type: "toolbar",
     resizable: false,
     titleBarStyle: "hidden",
     webPreferences: {
       nodeIntegration: true,
-      contextIsolation: false,
+      contextIsolation: true,
     },
   });
 
@@ -41,6 +43,45 @@ export function createWidget(params: ICreateWidget): CreateWidgetReturn {
     config,
     lock: false,
     folderPath,
+    isDevMode: false,
     ref: widgetWindow,
   };
 }
+
+export const createDevWidget = (params: ICreateWidget): CreateWidgetReturn => {
+  const { folderPath, config } = params;
+
+  const widgetWindow = new BrowserWindow({
+    width: Number(config.window.width),
+    height: Number(config.window.height),
+    webPreferences: {
+      nodeIntegration: true,
+      contextIsolation: true,
+    },
+  });
+
+  widgetWindow.loadFile(path.join(folderPath + config.window.entryFile));
+
+  return {
+    processId: uniqid(),
+    config,
+    lock: false,
+    folderPath,
+    isDevMode: true,
+    ref: widgetWindow,
+  };
+};
+
+export const enableDevModeForWidget = (
+  widget: CreateWidgetReturn
+): CreateWidgetReturn => {
+  widget.ref?.close();
+  return createDevWidget(widget);
+};
+
+export const disableDevModeForWidget = (
+  widget: CreateWidgetReturn
+): CreateWidgetReturn => {
+  widget.ref?.close();
+  return createWidget(widget);
+};
