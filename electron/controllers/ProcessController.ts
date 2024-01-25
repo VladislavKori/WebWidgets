@@ -1,5 +1,9 @@
 import { ipcMain } from "electron";
-import { createWidget } from "../services/WidgetService";
+import {
+  createDevWidget,
+  createWidget,
+  getMode,
+} from "../services/WidgetService";
 import { CreateWidgetReturn, ICreateWidget } from "../../types/Process";
 import Store from "./StoreController";
 import { processNotificate } from "../utils/ProcessNotificator";
@@ -19,8 +23,12 @@ class ProcessController {
     ipcMain.on("createWidget", (_, args: string) => {
       const config: ICreateWidget = JSON.parse(args);
 
+      const isDevMode = getMode();
+
       // create new widget with config
-      const newWidget: CreateWidgetReturn = createWidget(config);
+      const newWidget: CreateWidgetReturn = isDevMode
+        ? createDevWidget(config)
+        : createWidget(config);
 
       // Add widget in global store
       this.store.widgetsInProcess = [...this.store.widgetsInProcess, newWidget];

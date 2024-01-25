@@ -14,7 +14,10 @@ import Store from "./StoreController";
 import {
   disableDevModeForWidget,
   enableDevModeForWidget,
+  getMode,
+  setDevMode,
 } from "../services/WidgetService";
+import { processNotificate } from "../utils/ProcessNotificator";
 
 class SettingsController {
   private store: Store;
@@ -70,6 +73,14 @@ class SettingsController {
       widgets.map((item) => {
         this.store.widgetsInProcess.push(enableDevModeForWidget(item));
       });
+
+      setDevMode(true);
+
+      processNotificate(
+        this.store.mainWindow,
+        this.store.widgetsInProcess,
+        this.store.allIsLock
+      );
     });
 
     // handle - disable dev mode for modal windows
@@ -82,6 +93,19 @@ class SettingsController {
       widgets.map((item) => {
         this.store.widgetsInProcess.push(disableDevModeForWidget(item));
       });
+
+      setDevMode(false);
+
+      processNotificate(
+        this.store.mainWindow,
+        this.store.widgetsInProcess,
+        this.store.allIsLock
+      );
+    });
+
+    // handle - get mode
+    ipcMain.handle("get-mode", () => {
+      return getMode();
     });
   }
 }

@@ -1,19 +1,37 @@
 <script lang="ts">
-import Switch from '../../Elements/Switch/Switch.vue';
+import { defineComponent, ref } from 'vue'
+import Toggle from '../../Elements/Toggle/Toggle.vue';
 import './ChangeMode.scss'
 
-export default {
+export default defineComponent({
     name: "ChangeMode",
-    components: { Switch },
+    components: { Toggle },
     methods: {
         enableDevMode() {
             window.ipcRenderer.invoke("enable-dev-mode")
         },
         disableDevMode() {
             window.ipcRenderer.invoke("disable-dev-mode")
+        },
+        changeMode() {
+            this.changeToggleState()
+            if (this.toggleState) this.enableDevMode();
+            else this.disableDevMode();
         }
     },
-}
+    setup() {
+        let toggleState = ref(false);
+
+        function changeToggleState(): void {
+            toggleState.value = !toggleState.value;
+        }
+
+        return {
+            toggleState,
+            changeToggleState
+        }
+    }
+})
 
 </script>
 
@@ -22,9 +40,7 @@ export default {
         <h3>Dev Mode</h3>
         <div class="changeMode__row">
             <p class="changeMode__text">Enable developer mode and develop widgets much faster using Chrome dev tools</p>
-            <!-- <Switch :state="false" /> -->
-            <button @click="enableDevMode">Enable</button>
-            <button @click="disableDevMode">Disable</button>
+            <Toggle :value="toggleState" @changeState="changeMode" />
         </div>
     </div>
 </template>

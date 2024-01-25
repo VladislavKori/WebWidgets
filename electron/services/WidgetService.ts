@@ -5,8 +5,7 @@ import { CreateWidgetReturn, ICreateWidget } from "../../types/Process";
 
 // @ts-ignore
 import SWD from "../../packages/electron-swd";
-
-type WidgetModes = "dev" | "default";
+import { getConfiguration, saveConfiguration } from "./SettingsService";
 
 export function createWidget(params: ICreateWidget): CreateWidgetReturn {
   const { folderPath, config } = params;
@@ -85,3 +84,14 @@ export const disableDevModeForWidget = (
   widget.ref?.close();
   return createWidget(widget);
 };
+
+export function setDevMode(devMode: boolean) {
+  const config = getConfiguration();
+  config.widgets.devMode = devMode;
+  saveConfiguration(config);
+}
+
+export function getMode(): boolean {
+  const config = getConfiguration();
+  return config.widgets.devMode;
+}
