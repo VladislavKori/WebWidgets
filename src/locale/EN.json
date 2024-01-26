@@ -18,6 +18,7 @@
   },
   "buttons": {
     "uninstall": "Uninstall",
-    "create": "Create"
+    "create": "Create",
+    "addFolder": "Add Folder"
   }
 }

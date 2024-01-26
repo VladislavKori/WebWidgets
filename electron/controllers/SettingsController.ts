@@ -2,6 +2,7 @@ import { ipcMain } from "electron";
 // import Store from "./StoreController";
 import {
   getAllWidgetsFolderPaths,
+  openDialogForSelectFolder,
   openFolderInFileExplorer,
 } from "../services/FileServices";
 import {
@@ -28,7 +29,7 @@ class SettingsController {
 
   public init() {
     // handle - return folders path, where you save your widgets
-    ipcMain.handle("get-widget-folders", (_) => {
+    ipcMain.handle("get-widget-folders", (_): string[] => {
       return getAllWidgetsFolderPaths();
     });
 
@@ -39,15 +40,18 @@ class SettingsController {
     });
 
     // handle - set new path
-    ipcMain.handle("add-widget-folder", (_, args) => {
-      const path: string = JSON.parse(args);
-      addWidgetFolderPathToConfig(path);
+    ipcMain.handle("add-widget-folder", async (): Promise<string[]> => {
+      const paths: Array<string> = await openDialogForSelectFolder();
+      paths.map((path) => addWidgetFolderPathToConfig(path));
+
+      return getAllWidgetsFolderPaths();
     });
 
     // handle - remove folder path
-    ipcMain.handle("remove-folder-path", (_, args) => {
+    ipcMain.handle("remove-widget-folder", (_, args): string[] => {
       const path: string = JSON.parse(args);
       removeWidgetFolderPathFromConfig(path);
+      return getAllWidgetsFolderPaths();
     });
 
     // handle - set language
