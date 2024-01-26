@@ -2,12 +2,14 @@
 import WidgetsFolder from '../../components/Settings/WidgetsFolder/WidgetsFolder.vue'
 import ChangeLang from '../../components/Settings/ChangeLang/ChangeLang.vue'
 import ChangeMode from '../../components/Settings/ChangeMode/ChangeMode.vue'
+import AutoLunch from "../../components/Settings/AutoLunch/AutoLunch.vue"
 
 export default {
     components: {
         WidgetsFolder,
         ChangeLang,
-        ChangeMode
+        ChangeMode,
+        AutoLunch
     }
 }
 </script>
@@ -17,4 +19,5 @@ export default {
     <WidgetsFolder />
     <ChangeLang />
     <ChangeMode />
+    <AutoLunch />
 </template>

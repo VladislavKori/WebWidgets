@@ -6,11 +6,13 @@
     "home": "Home",
     "active": "Active",
     "installed": "Installed",
-    "devMode": "Dev Mode"
+    "devMode": "Dev Mode",
+    "autoLunch": "Auto Lunch"
   },
   "texts": {
     "empty": "There's nothing here yet",
-    "infoAboutDevMode": "Enable developer mode and develop widgets much faster using Chrome Dev Tools"
+    "infoAboutDevMode": "Enable developer mode and develop widgets much faster using Chrome Dev Tools",
+    "autoLunch": "The application will start when your PC starts"
   },
   "locker": {
     "lock": "Lock",

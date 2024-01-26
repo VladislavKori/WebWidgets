@@ -7,6 +7,9 @@ import {
 } from "../services/FileServices";
 import {
   addWidgetFolderPathToConfig,
+  disableAutoLunch,
+  enableAutoLunch,
+  getAutoLunchMode,
   getConfiguration,
   removeWidgetFolderPathFromConfig,
   saveConfiguration,
@@ -110,6 +113,20 @@ class SettingsController {
     // handle - get mode
     ipcMain.handle("get-mode", () => {
       return getMode();
+    });
+
+    // handle
+    ipcMain.handle("enable-auto-lunch", () => {
+      enableAutoLunch();
+    });
+
+    // handle
+    ipcMain.handle("disable-auto-lunch", () => {
+      disableAutoLunch();
+    });
+
+    ipcMain.handle("get-lunch-mode", () => {
+      return getAutoLunchMode();
     });
   }
 }

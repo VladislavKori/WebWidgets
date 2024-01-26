@@ -5,6 +5,7 @@ import ProcessController from "./controllers/ProcessController";
 import Store from "./controllers/StoreController";
 import { createTray } from "./utils/Tray";
 import SettingsController from "./controllers/SettingsController";
+import { InitAppByConfig } from "./utils/InitAppByConfig";
 
 // Init session store
 const store = new Store();
@@ -13,6 +14,9 @@ const store = new Store();
 new WidgetController({ store }).init();
 new ProcessController({ store }).init();
 new SettingsController({ store }).init();
+
+// Init app settings
+InitAppByConfig();
 
 app.on("activate", () => {
   if (BrowserWindow.getAllWindows().length === 0) {

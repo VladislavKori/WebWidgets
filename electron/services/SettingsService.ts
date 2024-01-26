@@ -1,6 +1,7 @@
 import path from "path";
 import { readFileSync, writeFileSync } from "node:fs";
 import { IAppConfig } from "../../types/Configuration";
+import { app } from "electron";
 
 const isProdMode: boolean = import.meta.env.MODE === "production";
 const prodFolderPath = isProdMode ? "../../app.asar.unpacked" : "../";
@@ -47,4 +48,29 @@ export function removeWidgetFolderPathFromConfig(path: string): void {
   config.paths = avaiblePaths.filter((p: string) => p !== path);
 
   saveConfiguration(config);
+}
+
+export function enableAutoLunch(): void {
+  app.setLoginItemSettings({
+    openAtLogin: true,
+  });
+
+  const config = getConfiguration();
+  config.autolunch = true;
+  saveConfiguration(config);
+}
+
+export function disableAutoLunch(): void {
+  app.setLoginItemSettings({
+    openAtLogin: false,
+  });
+
+  const config = getConfiguration();
+  config.autolunch = false;
+  saveConfiguration(config);
+}
+
+export function getAutoLunchMode(): boolean {
+  const config = getConfiguration();
+  return config.autolunch;
 }
