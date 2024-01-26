@@ -4,6 +4,7 @@ import { IWidgetConfig } from "./global";
 export interface ICreateWidget {
   config: IWidgetConfig;
   folderPath: string;
+  position?: number[];
 }
 
 export interface CreateWidgetReturn {

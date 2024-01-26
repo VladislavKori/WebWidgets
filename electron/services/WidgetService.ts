@@ -37,6 +37,10 @@ export function createWidget(params: ICreateWidget): CreateWidgetReturn {
 
   widgetWindow.loadFile(path.join(folderPath + config.window.entryFile));
 
+  if (params.position !== undefined) {
+    widgetWindow.setPosition(params.position[0], params.position[1]);
+  }
+
   return {
     processId: uniqid(),
     config,
@@ -61,6 +65,10 @@ export const createDevWidget = (params: ICreateWidget): CreateWidgetReturn => {
 
   widgetWindow.loadFile(path.join(folderPath + config.window.entryFile));
 
+  if (params.position !== undefined) {
+    widgetWindow.setPosition(params.position[0], params.position[1]);
+  }
+
   return {
     processId: uniqid(),
     config,
@@ -74,15 +82,17 @@ export const createDevWidget = (params: ICreateWidget): CreateWidgetReturn => {
 export const enableDevModeForWidget = (
   widget: CreateWidgetReturn
 ): CreateWidgetReturn => {
+  const position = widget.ref?.getPosition();
   widget.ref?.close();
-  return createDevWidget(widget);
+  return createDevWidget({ ...widget, position });
 };
 
 export const disableDevModeForWidget = (
   widget: CreateWidgetReturn
 ): CreateWidgetReturn => {
+  const position = widget.ref?.getPosition();
   widget.ref?.close();
-  return createWidget(widget);
+  return createWidget({ ...widget, position });
 };
 
 export function setDevMode(devMode: boolean) {
