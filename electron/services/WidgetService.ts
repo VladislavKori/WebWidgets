@@ -105,3 +105,9 @@ export function getMode(): boolean {
   const config = getConfiguration();
   return config.widgets.devMode;
 }
+
+export function saveWidgetInConfig(widgets: Array<ICreateWidget>) {
+  const appConfig = getConfiguration();
+  appConfig.widgets.active = widgets;
+  saveConfiguration(appConfig);
+}

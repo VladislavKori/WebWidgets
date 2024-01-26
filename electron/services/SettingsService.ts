@@ -12,7 +12,23 @@ const configurationPath = path.join(
 );
 
 export function getConfiguration(): IAppConfig {
-  const value: string = readFileSync(configurationPath, "utf8");
+  let value: string;
+
+  try {
+    value = readFileSync(configurationPath, "utf8");
+  } catch (err) {
+    saveConfiguration({
+      widgets: {
+        devMode: false,
+        active: [],
+      },
+      autolunch: true,
+      language: "en",
+      paths: [],
+    });
+
+    value = readFileSync(configurationPath, "utf8");
+  }
 
   return JSON.parse(value);
 }
