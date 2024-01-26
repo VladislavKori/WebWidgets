@@ -1,21 +1,23 @@
 {
-    "titles": {
-        "choseLang": "Language",
-        "widgetFolders": "Widgets Folder",
-        "settings": "Settings",
-        "home": "Home",
-        "active": "Active",
-        "installed": "Installed"
-    },
-     "texts": {
-        "empty": "There's nothing here yet"
-    },
-    "locker": {
-        "lock": "Lock",
-        "unlock": "Unlock"
-    },
-    "buttons": {
-        "uninstall": "Uninstall",
-        "create": "Create"
-    }
+  "titles": {
+    "choseLang": "Language",
+    "widgetFolders": "Widgets Folder",
+    "settings": "Settings",
+    "home": "Home",
+    "active": "Active",
+    "installed": "Installed",
+    "devMode": "Dev Mode"
+  },
+  "texts": {
+    "empty": "There's nothing here yet",
+    "infoAboutDevMode": "Enable developer mode and develop widgets much faster using Chrome Dev Tools"
+  },
+  "locker": {
+    "lock": "Lock",
+    "unlock": "Unlock"
+  },
+  "buttons": {
+    "uninstall": "Uninstall",
+    "create": "Create"
+  }
 }

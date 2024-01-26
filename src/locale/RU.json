@@ -1,21 +1,23 @@
 {
-    "titles": {
-        "choseLang": "Языки",
-        "widgetFolders": "Папки виджетов",
-        "settings": "Настройки",
-        "home": "Главная",
-        "active": "Активные",
-        "installed": "Установленные"
-    },
-    "texts": {
-        "empty": "Тут пока что ничего нет"
-    },
-    "locker": {
-        "lock": "Блокировать",
-        "unlock": "Разблокировать"
-    },
-    "buttons": {
-        "uninstall": "Удалить",
-        "create": "Создать"
-    }
+  "titles": {
+    "choseLang": "Языки",
+    "widgetFolders": "Папки виджетов",
+    "settings": "Настройки",
+    "home": "Главная",
+    "active": "Активные",
+    "installed": "Установленные",
+    "devMode": "Режим разработчика"
+  },
+  "texts": {
+    "empty": "Тут пока что ничего нет",
+    "infoAboutDevMode": "Включите режим разработчика и разрабатывайте виджеты намного быстрее с помощью Chrome Dev Tools"
+  },
+  "locker": {
+    "lock": "Блокировать",
+    "unlock": "Разблокировать"
+  },
+  "buttons": {
+    "uninstall": "Удалить",
+    "create": "Создать"
+  }
 }

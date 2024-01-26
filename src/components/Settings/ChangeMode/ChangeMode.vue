@@ -37,10 +37,12 @@ export default defineComponent({
 
 <template>
     <div class="changeMode">
-        <h3>Dev Mode</h3>
+        <h3>{{ $t('titles.devMode') }}</h3>
         <div class="changeMode__row">
-            <p class="changeMode__text">Enable developer mode and develop widgets much faster using Chrome dev tools</p>
-            <Toggle :value="toggleState" @changeState="changeMode" />
+            <p class="changeMode__text">{{ $t("texts.infoAboutDevMode") }}</p>
+            <div>
+                <Toggle :value="toggleState" @changeState="changeMode" />
+            </div>
         </div>
     </div>
 </template>
