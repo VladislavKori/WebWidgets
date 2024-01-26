@@ -14,22 +14,28 @@ export default defineComponent({
             window.ipcRenderer.invoke("disable-dev-mode")
         },
         changeMode() {
-            this.changeToggleState()
+            this.changeToggleState(!this.toggleState)
             if (this.toggleState) this.enableDevMode();
             else this.disableDevMode();
+        },
+        async getMode(): Promise<boolean> {
+            return await window.ipcRenderer.invoke("get-mode")
         }
     },
     setup() {
         let toggleState = ref(false);
 
-        function changeToggleState(): void {
-            toggleState.value = !toggleState.value;
+        function changeToggleState(to: boolean): void {
+            toggleState.value = to;
         }
 
         return {
             toggleState,
             changeToggleState
         }
+    },
+    async mounted() {
+        this.changeToggleState(await this.getMode())
     }
 })
 
