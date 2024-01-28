@@ -50,6 +50,7 @@ function transformTypeScriptPlugin(params: {
         server.watcher.add(item);
       });
 
+      // Debug
       // server.watcher.on("change", async (file) => {
       // console.log(`File ${file} changed`);
       // });
@@ -71,7 +72,7 @@ function transformTypeScriptPlugin(params: {
 
         const result = ts.transpileModule(code, {
           compilerOptions: {
-            module: ts.ModuleKind.ESNext,
+            module: ts.ModuleKind.CommonJS,
           },
         });
 

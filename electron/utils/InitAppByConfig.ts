@@ -1,4 +1,5 @@
 import Store from "../controllers/StoreController";
+import { initNodeJSLibs } from "../libs";
 import {
   disableAutoLunch,
   enableAutoLunch,
@@ -21,4 +22,7 @@ export function InitAppByConfig({ store }: { store: Store }) {
     // Add widget in global store
     store.widgetsInProcess = [...store.widgetsInProcess, newWidget];
   });
+
+  // Init Support for NodeJS Libs
+  initNodeJSLibs();
 }

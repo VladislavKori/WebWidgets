@@ -19,7 +19,7 @@ export function createWidget(params: ICreateWidget): CreateWidgetReturn {
     resizable: false,
     titleBarStyle: "hidden",
     webPreferences: {
-      preload: path.join(__dirname, "widget-preload.ts"),
+      preload: path.join(__dirname, "widget-preload.js"),
       nodeIntegration: false,
       contextIsolation: true,
     },
@@ -62,6 +62,7 @@ export const createDevWidget = (params: ICreateWidget): CreateWidgetReturn => {
       preload: path.join(__dirname, "widget-preload.js"),
       nodeIntegration: false,
       contextIsolation: true,
+      devTools: true,
     },
   });
 
@@ -70,6 +71,12 @@ export const createDevWidget = (params: ICreateWidget): CreateWidgetReturn => {
   if (params.position !== undefined) {
     widgetWindow.setPosition(params.position[0], params.position[1]);
   }
+
+  widgetWindow.maximize();
+
+  widgetWindow.on("ready-to-show", () => {
+    widgetWindow.webContents.openDevTools();
+  });
 
   return {
     processId: uniqid(),
