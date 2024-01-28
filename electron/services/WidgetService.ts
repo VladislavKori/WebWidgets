@@ -19,7 +19,8 @@ export function createWidget(params: ICreateWidget): CreateWidgetReturn {
     resizable: false,
     titleBarStyle: "hidden",
     webPreferences: {
-      nodeIntegration: true,
+      preload: path.join(__dirname, "widget-preload.ts"),
+      nodeIntegration: false,
       contextIsolation: true,
     },
   });
@@ -58,7 +59,8 @@ export const createDevWidget = (params: ICreateWidget): CreateWidgetReturn => {
     width: Number(config.window.width),
     height: Number(config.window.height),
     webPreferences: {
-      nodeIntegration: true,
+      preload: path.join(__dirname, "widget-preload.js"),
+      nodeIntegration: false,
       contextIsolation: true,
     },
   });
