@@ -45,7 +45,16 @@ function transformTypeScriptPlugin(params: {
 }) {
   return {
     name: "transform-ts",
-    transform() {
+    configureServer(server) {
+      params.input.map((item) => {
+        server.watcher.add(item);
+      });
+
+      // server.watcher.on("change", async (file) => {
+      // console.log(`File ${file} changed`);
+      // });
+    },
+    handleHotUpdate() {
       if (params.input.length === 0) return;
 
       params.input.map((filepath) => {
