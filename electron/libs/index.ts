@@ -1,7 +1,7 @@
 import { ipcMain } from "electron";
 import osConfiguration from "./os";
 import pathConfiguration from "./path";
-import fsConfiguration from "./fs";
+// import fsConfiguration from "./fs";
 
 export const initNodeJSLibs = () => {
   createIPCfunctions(osConfiguration);
