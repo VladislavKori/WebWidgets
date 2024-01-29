@@ -6,7 +6,7 @@ import pathConfiguration from "./path";
 export const initNodeJSLibs = () => {
   createIPCfunctions(osConfiguration);
   createIPCfunctions(pathConfiguration);
-  //   createIPCfunctions(fsConfiguration);
+  createIPCfunctions(fsConfiguration);
 };
 
 function createIPCfunctions(module: any) {
@@ -14,7 +14,6 @@ function createIPCfunctions(module: any) {
     const ipcName = module.name + "-" + key;
     ipcMain.handle(ipcName, (_, args: string) => {
       if (args) args = JSON.parse(args);
-      console.log(args);
 
       let res;
       if (typeof value === "function") {
