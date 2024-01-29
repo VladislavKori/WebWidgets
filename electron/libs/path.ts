@@ -14,7 +14,7 @@ const functionsForRendrer = {
     parse: (args: { path: string }) => path.parse(args.path),
     relative: (args: { from: string; to: string }) =>
       path.relative(args.from, args.to),
-    resolve: (args: { paths: Array<string> }) => path.resolve(...paths),
+    resolve: (args: { paths: Array<string> }) => path.resolve(...args.paths),
     sep: () => path.sep,
   },
 };
