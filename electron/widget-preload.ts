@@ -84,15 +84,33 @@ contextBridge.exposeInMainWorld("path", {
   sep: async () => JSON.parse(await ipcRenderer.invoke("path-sep")),
 });
 
-// contextBridge.exposeInMainWorld("fs", {
-//   // Запись файла, Удаление файла, Чтение файла, Проверка доступности, Создание папки, Удаление папки
-//   readFile: async (path: string) =>
-//     JSON.parse(
-//       await ipcRenderer.invoke(
-//         "fs-readFile",
-//         JSON.stringify({
-//           paths: path.split(path.),
-//         })
-//       )
-//     ),
-// });
+contextBridge.exposeInMainWorld("fs", {
+  //  Проверка доступности, Создание папки
+  readFile: async (path: string) => JSON.parse(
+      await ipcRenderer.invoke(
+        "fs-readFile",
+        JSON.stringify({
+          path
+        })
+      )
+    ),
+  writeFile: async (path: string, data: string) => {
+    const result = await ipcRenderer.invoke(
+      "fs-writeFile",
+      JSON.stringify({
+        path, data
+      })
+    )
+    if (result !== undefined) return JSON.parse(result)
+  },
+  rm: async (path: string) => {
+    const result = await ipcRenderer.invoke("fs-rm", JSON.stringify({ path }))
+    if (result !== undefined) return JSON.parse(result)
+  },
+  exists: async (path: string) => JSON.parse(await ipcRenderer.invoke("fs-exists", JSON.stringify({ path }))),
+  mkdir: async (path: string) => {
+    const result = await ipcRenderer.invoke("fs-mkdir", JSON.stringify({ path }))
+    if (result!== undefined) return JSON.parse(result)
+  },
+  readdir: async (path: string) => JSON.parse(await ipcRenderer.invoke("fs-readdir", JSON.stringify({ path }))),
+})
