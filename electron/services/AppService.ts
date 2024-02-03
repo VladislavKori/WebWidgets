@@ -1,4 +1,4 @@
-import { BrowserWindow, app, ipcMain } from "electron";
+import { BrowserWindow, app, ipcMain, screen } from "electron";
 import path from "node:path";
 
 const VITE_DEV_SERVER_URL = process.env["VITE_DEV_SERVER_URL"];
@@ -26,9 +26,14 @@ export function createMainWindow(callback?: Function | undefined) {
     },
   });
 
-  //  The platform-specific handle of the window.
-  // console.log("this", win.getNativeWindowHandle());
+  // Manual centering of the window at startup
+  let { width, height } = screen.getPrimaryDisplay().workAreaSize;
+  let { width: winWidth, height: winHeight } = win.getBounds();
+  let x = Math.round(width / 2 - winWidth / 1.5);
+  let y = Math.round(height / 2 - winHeight / 1.5);
+  win.setPosition(x, y);
 
+  // Window event handling
   ipcMain.on("close", (_) => {
     win.hide();
   });
