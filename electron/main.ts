@@ -31,6 +31,21 @@ app.on("window-all-closed", () => {
   }
 });
 
+const additionalData = { myKey: "hello-key" };
+const gotTheLock = app.requestSingleInstanceLock(additionalData);
+
+if (!gotTheLock) {
+  app.quit();
+} else {
+  app.on("second-instance", () => {
+    if (store.mainWindow !== null) {
+      if (store.mainWindow.isMinimized()) store.mainWindow.restore();
+      if (!store.mainWindow.isVisible()) store.mainWindow.show();
+      store.mainWindow.focus();
+    }
+  });
+}
+
 app.whenReady().then((_) => {
   createMainWindow((win: BrowserWindow) => {
     store.mainWindow = win;
