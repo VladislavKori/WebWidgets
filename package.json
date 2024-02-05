@@ -38,6 +38,9 @@
       "./Widgets",
       "./conf"
     ],
+    "extraMetadata": {
+      "version": "0.2.0"
+    },
     "productName": "WebWidgets",
     "directories": {
       "output": "release/${version}"
