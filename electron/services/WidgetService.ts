@@ -72,8 +72,6 @@ export const createDevWidget = (params: ICreateWidget): CreateWidgetReturn => {
     widgetWindow.setPosition(params.position[0], params.position[1]);
   }
 
-  widgetWindow.maximize();
-
   widgetWindow.on("ready-to-show", () => {
     widgetWindow.webContents.openDevTools();
   });

@@ -36,6 +36,8 @@ class ProcessController {
       // controll widget lock status
       changeLockStatusForAll(this.store.widgetsInProcess, this.store.allIsLock);
 
+      this.checkClose(newWidget);
+
       //  Notificate front-end that process changed
       processNotificate(
         this.store.mainWindow,
@@ -109,6 +111,22 @@ class ProcessController {
       changeLockStatusForAll(this.store.widgetsInProcess, this.store.allIsLock);
 
       //  Notificate front-end that process changed
+      processNotificate(
+        this.store.mainWindow,
+        this.store.widgetsInProcess,
+        this.store.allIsLock
+      );
+    });
+  }
+
+  // Notificate fron-end if some widget was closed
+  private checkClose(widget: CreateWidgetReturn) {
+    widget.ref?.on("close", () => {
+      console.log("widget closed");
+      this.store.widgetsInProcess = this.store.widgetsInProcess.filter(
+        (win) => win.processId !== widget.processId
+      );
+
       processNotificate(
         this.store.mainWindow,
         this.store.widgetsInProcess,
