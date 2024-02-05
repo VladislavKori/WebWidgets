@@ -1,5 +1,5 @@
-import path from "path";
-import { readFileSync, writeFileSync } from "node:fs";
+import path, { dirname } from "path";
+import { existsSync, mkdirSync, readFileSync, writeFileSync } from "node:fs";
 import { IAppConfig } from "../../types/Configuration";
 import { app } from "electron";
 
@@ -35,6 +35,13 @@ export function getConfiguration(): IAppConfig {
 
 export function saveConfiguration(configuration: IAppConfig): void {
   const value: string = JSON.stringify(configuration);
+
+  const confDir = dirname(configurationPath)
+
+  if (!existsSync(confDir)) {
+    mkdirSync(confDir, { recursive: true });
+  }
+
   writeFileSync(configurationPath, value);
 }
 
