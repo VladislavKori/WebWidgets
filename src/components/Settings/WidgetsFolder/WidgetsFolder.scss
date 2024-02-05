@@ -33,6 +33,11 @@
     flex: 1;
     font-family: var(--font1);
     font-size: 14px;
+    overflow-x: auto;
+
+    &::-webkit-scrollbar {
+      display: none;
+    }
   }
 
   &__openFolder {
