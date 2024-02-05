@@ -14,7 +14,7 @@ export function createWidget(params: ICreateWidget): CreateWidgetReturn {
     width: Number(config.window.width),
     height: Number(config.window.height),
     transparent: true,
-    frame: true,
+    frame: false,
     type: "toolbar",
     resizable: false,
     titleBarStyle: "hidden",

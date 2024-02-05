@@ -19,6 +19,7 @@ export function createMainWindow(callback?: Function | undefined) {
     icon: path.join(process.env.VITE_PUBLIC, "logo64x64.png"),
     minWidth: 1200,
     minHeight: 800,
+    frame: isProdMode,
     titleBarStyle: isProdMode ? "hidden" : "default",
     webPreferences: {
       preload: path.join(__dirname, "preload.js"),
