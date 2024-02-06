@@ -122,7 +122,6 @@ class ProcessController {
   // Notificate fron-end if some widget was closed
   private checkClose(widget: CreateWidgetReturn) {
     widget.ref?.on("close", () => {
-      console.log("widget closed");
       this.store.widgetsInProcess = this.store.widgetsInProcess.filter(
         (win) => win.processId !== widget.processId
       );

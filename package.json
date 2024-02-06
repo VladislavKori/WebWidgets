@@ -1,7 +1,7 @@
 {
   "name": "webwidgets",
   "private": true,
-  "version": "0.0.0",
+  "version": "0.1.0",
   "scripts": {
     "dev": "vite",
     "build": "vue-tsc && vite build && electron-builder",
@@ -39,7 +39,7 @@
       "./conf"
     ],
     "extraMetadata": {
-      "version": "0.2.0"
+      "version": "0.1.0"
     },
     "productName": "WebWidgets",
     "directories": {

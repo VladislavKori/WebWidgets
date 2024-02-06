@@ -78,7 +78,10 @@ class SettingsController {
       this.store.widgetsInProcess = [];
 
       widgets.map((item) => {
-        this.store.widgetsInProcess.push(enableDevModeForWidget(item));
+        this.store.widgetsInProcess = [
+          ...this.store.widgetsInProcess,
+          enableDevModeForWidget(item),
+        ];
       });
 
       setDevMode(true);

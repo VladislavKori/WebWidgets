@@ -1,2 +1,2 @@
-rm -rf conf
+rm -rf ../conf
 command npm run build
