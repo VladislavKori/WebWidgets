@@ -13,7 +13,7 @@ Hello world, today you came across the Web Widgets project, which is a unique pl
 
 ## Available for
 
-- Windows
+- Windows - [Download](https://github.com/VladislavKori/WebWidgets/releases/tag/v.0.1.0-beta.1)
 - Linux support will be implemented in v.0.1.0
 
 ## How do I create my own widget?
