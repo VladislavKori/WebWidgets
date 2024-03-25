@@ -8,7 +8,9 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@rollup/plugin-commonjs": "^25.0.7",
     "@types/open-file-explorer": "^1.0.2",
+    "electron-swd": "^1.0.0",
     "open-file-explorer": "^1.0.2",
     "sass": "^1.69.5",
     "uniqid": "^5.4.0",
@@ -18,6 +20,7 @@
     "vue-router": "^4.2.5"
   },
   "devDependencies": {
+    "@electron/rebuild": "^3.6.0",
     "@types/node": "^20.10.7",
     "@types/uniqid": "^5.3.4",
     "@vitejs/plugin-vue": "^4.3.4",

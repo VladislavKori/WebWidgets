@@ -1,3 +1,0 @@
-[submodule "packages/electron-swd"]
-	path = packages/electron-swd
-	url = https://github.com/VladislavKori/electron-swd

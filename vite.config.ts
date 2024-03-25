@@ -21,6 +21,15 @@ export default defineConfig({
     electron({
       main: {
         entry: "electron/main.ts",
+        vite: {
+          build: {
+            rollupOptions: {
+              external: [
+                "electron-swd"
+              ]
+            }
+          }
+        }
       },
       preload: {
         input: path.join(__dirname, "electron/preload.ts"),
@@ -34,7 +43,14 @@ export default defineConfig({
   ],
   build: {
     rollupOptions: {
-      external: ["swd"],
+      external: ["electron-swd"],
+      // plugins: [
+      //   commonjs({
+      //     dynamicRequireTargets: [
+      //       "C:/Users/vladi/Documents/projects/WebWidgets/dist-electron/build/Release/SWD.node",
+      //     ]
+      //   }),
+      // ],
     },
   },
 });
@@ -88,4 +104,7 @@ function transformTypeScriptPlugin(params: {
       });
     },
   };
+}
+function externalizeDepsPlugin() {
+  throw new Error("Function not implemented.");
 }

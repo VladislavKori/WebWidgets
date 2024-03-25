@@ -4,7 +4,7 @@ import { BrowserWindow } from "electron";
 import { CreateWidgetReturn, ICreateWidget } from "../../types/Process";
 
 // @ts-ignore
-import SWD from "../../packages/electron-swd";
+import { toBottom } from "electron-swd";
 import { getConfiguration, saveConfiguration } from "./SettingsService";
 
 export function createWidget(params: ICreateWidget): CreateWidgetReturn {
@@ -31,9 +31,7 @@ export function createWidget(params: ICreateWidget): CreateWidgetReturn {
 
   widgetWindow.on("focus", () => {
     widgetWindow.setBackgroundColor("#00000000");
-    SWD.toBottom(
-      widgetWindow.getNativeWindowHandle().readUInt32LE().toString(16)
-    );
+    toBottom(widgetWindow.getNativeWindowHandle());
   });
 
   widgetWindow.loadFile(path.join(folderPath + config.window.entryFile));
