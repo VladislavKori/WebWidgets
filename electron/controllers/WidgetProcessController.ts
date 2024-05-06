@@ -41,7 +41,7 @@ export class WidgetProcessController {
       const processWidgetObj = createWidget(widgetObj);
       this._store.process.widgets.push(processWidgetObj);
 
-      processWidgetObj.ref?.on("closed", () => {
+      processWidgetObj.ref?.on("close", () => {
         this._store.process.widgets = this._store.process.widgets.filter(
           (widget) => widget.id !== processWidgetObj.id
         );
@@ -132,23 +132,25 @@ export class WidgetProcessController {
 
     ipcMain.on("enable-dev-mode", (_, args: string) => {
       const { widgets }: { widgets: { id: string }[] } = JSON.parse(args);
-      console.log("enable-dev-mode")
       widgets.map((widget) => {
         const widgetId: string = widget.id;
         let findWidget: IWidget = this._store.process.widgets.find(
           (widget) => widget.id === widgetId
         );
-
+        
         if (findWidget === undefined) return;
         if (findWidget.parameters === undefined) return;
-        if (findWidget.parameters.mode === 'dev') return;
+        if (findWidget.parameters.mode === "dev") return;
         if (findWidget.ref === undefined) return;
 
+        const widgetIndex: number = this._store.process.widgets.indexOf(findWidget);
+        
+        const devWidget = createDevWidget(findWidget);
+        this._store.process.widgets.splice(widgetIndex, 0, devWidget);
         findWidget.ref.close();
-        const devWidget = createDevWidget(findWidget)
-        this._store.process.widgets.push(devWidget);
+        this.notificate();
 
-        devWidget.ref?.on("closed", () => {
+        devWidget.ref?.on("close", () => {
           this._store.process.widgets = this._store.process.widgets.filter(
             (widget) => widget.id !== devWidget.id
           );
@@ -167,17 +169,11 @@ export class WidgetProcessController {
             this.notificateWidget(widget.id, widget.parameters);
           }
         });
-
-        this.notificateWidget(widgetId, devWidget.parameters!);
       });
-
-      this.notificate();
     });
 
     ipcMain.on("disable-dev-mode", (_, args: string) => {
-      const { widgets }: { widgets: { id: string }[] } =
-        JSON.parse(args);
-      console.log("disable-dev-mode")
+      const { widgets }: { widgets: { id: string }[] } = JSON.parse(args);
       widgets.map((widget) => {
         const widgetId: string = widget.id;
         let findWidget: IWidget = this._store.process.widgets.find(
@@ -189,11 +185,14 @@ export class WidgetProcessController {
         if (findWidget.parameters.mode === "production") return;
         if (findWidget.ref === undefined) return;
 
-        findWidget.ref.close();
-        const prodWidget = createWidget(findWidget)
-        this._store.process.widgets.push(prodWidget);
+        const widgetIndex: number = this._store.process.widgets.indexOf(findWidget);
 
-        prodWidget.ref?.on("closed", () => {
+        const prodWidget = createWidget(findWidget);
+        this._store.process.widgets.splice(widgetIndex, 0, prodWidget);
+        findWidget.ref.close();
+        this.notificate();
+
+        prodWidget.ref?.on("close", () => {
           this._store.process.widgets = this._store.process.widgets.filter(
             (widget) => widget.id !== prodWidget.id
           );
@@ -212,11 +211,7 @@ export class WidgetProcessController {
             this.notificateWidget(widget.id, widget.parameters);
           }
         });
-
-        this.notificateWidget(widgetId, prodWidget.parameters!);
       });
-      
-      this.notificate();
     });
   }
 
@@ -229,7 +224,7 @@ export class WidgetProcessController {
         return object;
       }),
     ];
-
+    
     HubNotificate(
       this._hubWindow,
       "listen-widgets-in-process",

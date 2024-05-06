@@ -45,8 +45,6 @@ async function initPositionListner({ processId }: { processId: string }) {
     if (value.id === processId) {
       widgetPosition.value = { x: value.position.x, y: value.position.y };
       widgetIsLock.value = value.locker;
-      console.log(value.mode)
-      widgetWorkMode.value = value.mode
     }
   });
 }
@@ -83,9 +81,9 @@ async function disableDevMode() {
 }
 
 async function changeWorkMode() {
-  console.log(widgetWorkMode.value)
-  if (widgetWorkMode.value === "dev") await disableDevMode()
-  else if (widgetWorkMode.value === "production") await enableDevMode()
+  console.log(props.id, props.parameters?.mode)
+  if (props.parameters?.mode === "dev") await disableDevMode()
+  else if (props.parameters?.mode === "production") await enableDevMode()
 }
 
 window.addEventListener("keydown", (e) => {
@@ -126,7 +124,7 @@ onMounted(async () => {
 
       <div>
         <p>Dev Mode</p>
-        <Switch :onChange="changeWorkMode" :defaultValue="widgetWorkMode === 'dev'" />
+        <Switch :onChange="changeWorkMode" :defaultValue="parameters?.mode === 'dev'" />
       </div>
     </Collapse>
   </div>
@@ -136,6 +134,7 @@ onMounted(async () => {
         <img :src="folderPath + config.preview" />
       </div>
       <h4>{{ config.name }}</h4>
+      <h4>{{ parameters?.mode }}</h4>
       <button @click="closeWidget">close</button>
     </div>
     <div class="inprocess-card__right">
