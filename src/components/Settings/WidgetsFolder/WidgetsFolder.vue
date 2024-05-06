@@ -2,35 +2,28 @@
 import OpenFolderIcon from "../../../assets/Settings/open-folder.svg?component";
 import TrashIcon from "../../../assets/Settings/trash.svg?component";
 import Button from "../../UI/Button/Button.vue";
-import { onMounted, ref } from "vue";
 
-const folders = ref<string[]>([]);
-
-async function getWidgetFolders() {
-  folders.value = await window.ipcRenderer.invoke("get-widget-folders");
-}
+defineProps<{
+  folders: string[]
+}>()
 
 async function openWidgetsFolder(folderPath: string) {
-  await window.ipcRenderer.invoke(
-    "open-widget-folder",
+  await window.ipcRenderer.send(
+    "open-folder",
     JSON.stringify(folderPath)
   );
 }
 
 async function addWidgetFolder() {
-  folders.value = await window.ipcRenderer.invoke("add-widget-folder");
+  await window.ipcRenderer.send("add-folder");
 }
 
 async function removeWidgetFolder(path: string) {
-  folders.value = await window.ipcRenderer.invoke(
-    "remove-widget-folder",
+  await window.ipcRenderer.send(
+    "remove-folder",
     JSON.stringify(path)
   );
 }
-
-onMounted(async () => {
-  await getWidgetFolders();
-});
 </script>
 
 <template>

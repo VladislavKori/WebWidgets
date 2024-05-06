@@ -1,21 +1,20 @@
 <script lang="ts" setup>
-import { setLanguage } from "../../../utils/LangFunc";
 import "./ChangeLang.scss";
-import { onMounted, ref } from "vue";
+import { withDefaults } from "vue";
 import { useI18n } from "vue-i18n";
 
 const { locale } = useI18n();
 
-const lang = ref<string>("en");
-function changeLang(value: string) {
-  locale.value = value;
-  lang.value = value;
-  setLanguage(value);
-}
-
-onMounted(() => {
-    lang.value = locale.value;
+const props = withDefaults(defineProps<{
+  lang: "en" | "ru"
+}>(), {
+  lang: "en"
 })
+
+async function changeLang(value: "en" | "ru") {
+  locale.value = value;
+  await window.ipcRenderer.send("set-language", JSON.stringify({ language: value}));
+}
 </script>
 
 <template>
@@ -25,7 +24,7 @@ onMounted(() => {
       <button
         @click="changeLang('ru')"
         class="change-lang__button"
-        :class="{ active: lang == 'ru' }"
+        :class="{ active: props.lang == 'ru' }"
       >
         Ru
       </button>

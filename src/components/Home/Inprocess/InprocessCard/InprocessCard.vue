@@ -35,7 +35,8 @@ function updateWidgetPosition(x: number, y: number) {
 }
 
 async function initPositionListner({ processId }: { processId: string }) {
-  await window.ipcRenderer.on(`listen-widget-${processId}`, (_, args) => {
+  console.log(props.id)
+  await window.ipcRenderer.on(`listen-widget-${props.id}`, (_, args) => {
     const value: {
       id: string;
       position: { x: number; y: number };
@@ -95,12 +96,12 @@ onMounted(async () => {
     await initPositionListner({ processId: props.id });
   }
 
-  if (props.parameters?.position) {
-    widgetPosition.value = {
-      x: props.parameters?.position.x,
-      y: props.parameters?.position.y,
-    };
-  }
+  // if (props.parameters?.position) {
+  //   widgetPosition.value = {
+  //     x: props.parameters?.position.x,
+  //     y: props.parameters?.position.y,
+  //   };
+  // }
 
   if (props.parameters?.mode) {
     widgetWorkMode.value = props.parameters.mode;

@@ -57,7 +57,7 @@ export function createWidget(params: IWidget): IWidget {
 }
 
 export const createDevWidget = (params: IWidget): IWidget => {
-  const { folderPath, config, widgetId, parameters, id } = params;
+  const { folderPath, config, widgetId } = params;
 
   const widgetWindow = new BrowserWindow({
     width: Number(config.window.width),
@@ -71,10 +71,6 @@ export const createDevWidget = (params: IWidget): IWidget => {
   });
 
   widgetWindow.loadFile(path.join(folderPath + config.window.entryFile));
-
-  // if (params.position !== undefined) {
-  //   widgetWindow.setPosition(params.position[0], params.position[1]);
-  // }
 
   widgetWindow.maximize();
 
@@ -98,10 +94,3 @@ export const createDevWidget = (params: IWidget): IWidget => {
     },
   };
 };
-
-// export function saveWidgetInConfig(widgets: Array<ICreateWidget>) {
-//   const appConfig = getConfiguration();
-//   appConfig.widgets.active = widgets;
-//   saveConfiguration(appConfig);
-// }
-1;

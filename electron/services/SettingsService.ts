@@ -13,12 +13,12 @@ const configurationPath = path.join(
 
 export function getConfiguration(): IAppConfiguration {
   let value: string;
-
+  
   try {
     value = readFileSync(configurationPath, "utf8");
   } catch (err) {
     saveConfiguration({
-      autolunch: true,
+      autolaunch: true,
       language: "en",
       folders: [],
     });
@@ -37,16 +37,15 @@ export function saveConfiguration(configuration: IAppConfiguration): void {
   if (!existsSync(confDir)) {
     mkdirSync(confDir, { recursive: true });
   }
-
   writeFileSync(configurationPath, value);
 }
 
 export function getWidgetsFolderPathsFromConfig(): string[] {
   const config: any = getConfiguration();
 
-  if (!("paths" in config)) return [];
+  if (!("folders" in config)) return [];
 
-  return config.paths;
+  return config.folders;
 }
 
 export function addWidgetFolderPathToConfig(path: string): void {
@@ -69,27 +68,22 @@ export function removeWidgetFolderPathFromConfig(path: string): void {
   saveConfiguration(config);
 }
 
-export function enableAutoLunch(): void {
+export function enableAutolaunch(): void {
   app.setLoginItemSettings({
     openAtLogin: true,
   });
 
   const config = getConfiguration();
-  config.autolunch = true;
+  config.autolaunch = true;
   saveConfiguration(config);
 }
 
-export function disableAutoLunch(): void {
+export function disableAutolaunch(): void {
   app.setLoginItemSettings({
     openAtLogin: false,
   });
 
   const config = getConfiguration();
-  config.autolunch = false;
+  config.autolaunch = false;
   saveConfiguration(config);
-}
-
-export function getAutoLunchMode(): boolean {
-  const config = getConfiguration();
-  return config.autolunch;
 }

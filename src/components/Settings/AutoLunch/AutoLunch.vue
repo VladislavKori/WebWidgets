@@ -2,33 +2,27 @@
 import { onMounted, ref } from "vue";
 import Switch from "../../UI/Switch/Switch.vue";
 
-const mode = ref<boolean>(false);
-const modeLoading = ref<boolean>(false);
+const props = withDefaults(defineProps<{
+  autolaunch: boolean
+}>(), {
+  autolaunch: false
+})
+
+const mode = ref<boolean>(props.autolaunch);
 
 function changeMode(value: boolean) {
-    console.log(value);
   if (value) mode.value = value;
   else mode.value = !mode.value;
 
-  if (mode.value) enableDevMode();
-  else disableDevMode();
+  if (mode.value) enableAutolaunch();
+  else disableAutolaunch();
 }
-function enableDevMode() {
-  window.ipcRenderer.invoke("enable-auto-lunch");
+async function enableAutolaunch() {
+  await window.ipcRenderer.send("enable-autolaunch");
 }
-function disableDevMode() {
-  window.ipcRenderer.invoke("disable-auto-lunch");
+async function disableAutolaunch() {
+  await window.ipcRenderer.send("disable-autolaunch");
 }
-async function getMode(): Promise<boolean> {
-  modeLoading.value = true;
-  return await window.ipcRenderer.invoke("get-lunch-mode");
-}
-
-onMounted(async () => {
-  console.log(await getMode());
-  changeMode(await getMode());
-  modeLoading.value = false;
-});
 </script>
 
 <template>
@@ -41,7 +35,6 @@ onMounted(async () => {
           size="large"
           :onChange="changeMode"
           :defaultValue="mode"
-          :loading="modeLoading"
         />
       </div>
     </div>

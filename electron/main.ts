@@ -4,6 +4,7 @@ import { HubController } from "./controllers/HubController";
 import { WidgetManageController } from "./controllers/WidgetManageController";
 import { WidgetProcessController } from "./controllers/WidgetProcessController";
 import { IStore } from "../types/Store";
+import { SettingsController } from "./controllers/SettingsController";
 
 class WebWidgetsApp {
   private _hubWindow: BrowserWindow | undefined;
@@ -34,7 +35,7 @@ class WebWidgetsApp {
         hubWindow: this._hubWindow,
         store: this._store,
       });
-      
+      new SettingsController({ hubWindow: this._hubWindow });
 
       HubController.eventSecondInstance(this._hubWindow);
 

@@ -1,26 +1,40 @@
-<script lang="ts">
+<script lang="ts" setup>
 import WidgetsFolder from "../../components/Settings/WidgetsFolder/WidgetsFolder.vue";
 import ChangeLang from "../../components/Settings/ChangeLang/ChangeLang.vue";
-import ChangeMode from "../../components/Settings/ChangeMode/ChangeMode.vue";
-import AutoLunch from "../../components/Settings/AutoLunch/AutoLunch.vue";
+import Autolaunch from "../../components/Settings/AutoLunch/AutoLunch.vue";
+import { IAppConfiguration } from "../../../types/AppConfiguration";
+import { onMounted, ref } from "vue";
 
-export default {
-  components: {
-    WidgetsFolder,
-    ChangeLang,
-    ChangeMode,
-    AutoLunch,
-  },
-};
+const state = ref<IAppConfiguration>({
+  language: 'en',
+	autolaunch: true,
+	folders: [], 
+})
+
+async function listenAppConfig() {
+  await window.ipcRenderer.on("listen-app-config", (_, args) => {
+    const { folders, language, autolaunch } = JSON.parse(args)
+    state.value.folders = folders;
+    state.value.language = language;
+    state.value.autolaunch = autolaunch;
+  })
+}
+async function callNotification() {
+  await window.ipcRenderer.send("settings-controller-notificate")
+}
+
+onMounted(async () => {
+  await listenAppConfig();
+  await callNotification();
+})
 </script>
 
 <template>
   <div class="settings">
     <h1 class="settings__title">{{ $t("titles.settings") }}</h1>
-    <WidgetsFolder />
-    <ChangeLang />
-    <ChangeMode />
-    <AutoLunch />
+    <WidgetsFolder :folders="state.folders" />
+    <ChangeLang :lang="state.language" />
+    <Autolaunch :autolaunch="state.autolaunch" />
   </div>
 </template>
 

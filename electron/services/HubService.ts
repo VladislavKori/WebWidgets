@@ -9,8 +9,8 @@ import {
 } from "electron";
 import path from "node:path";
 import {
-  disableAutoLunch,
-  enableAutoLunch,
+  disableAutolaunch,
+  enableAutolaunch,
   getConfiguration,
 } from "./SettingsService";
 import { initNodeJSLibs } from "../libs";
@@ -108,8 +108,8 @@ export function initHubByConfig() {
   const config = getConfiguration();
 
   // Set autolunch
-  if (config.autolunch) enableAutoLunch();
-  else disableAutoLunch();
+  if (config.autolaunch) enableAutolaunch();
+  else disableAutolaunch();
 
   // Init Support for NodeJS Libs
   initNodeJSLibs();

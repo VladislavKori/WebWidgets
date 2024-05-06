@@ -10,6 +10,7 @@ import Dropdown from "../../components/UI/Dropdown/Dropdown.vue";
 
 import LockKeyhole from "../../assets/Inprocess/lock-keyhole.svg?component";
 import LockKeyholeUnlocked from "../../assets/Inprocess/lock-keyhole-unlocked.svg?component";
+import { IWidget } from "../../../types/Widget";
 
 type Mode = "installed" | "active";
 const mode = ref<Mode>("installed");
@@ -25,7 +26,7 @@ async function changeLockStatusForAllWidgets() {
 }
 async function listenWidgetsInProcess() {
   await window.ipcRenderer.on("widgets-in-process", (_, args) => {
-    allWidgetsLocked.value = JSON.parse(args).allIsLock;
+    allWidgetsLocked.value = JSON.parse(args).every((item: IWidget) => item.parameters?.locker === true);
   });
 }
 

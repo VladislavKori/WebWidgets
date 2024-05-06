@@ -2,6 +2,6 @@ import type { LanguageType } from "./global";
 
 export interface IAppConfiguration {
 	language: LanguageType;
-	autolunch: boolean;
+	autolaunch: boolean;
 	folders: string[]; 
 }

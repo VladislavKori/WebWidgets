@@ -19,4 +19,11 @@ export function getInstalledWidgets(): IWidget[] {
 /**
  * install widget
  */
-export function installWidget() {}
+export async function installWidget(url: string) {
+  const res = await fetch(url);
+  if (!res.ok) {
+    throw new Error("URL not found")
+  } 
+
+  // const resConfFile = await fetch()
+}

@@ -7,7 +7,6 @@ import {
   IWidgetForRenderProcess,
   WidgetParameters,
 } from "../../types/Widget";
-import { toBottom } from "electron-swd";
 
 interface WidgetProcessControllerConstructor {
   hubWindow: BrowserWindow;
@@ -41,25 +40,7 @@ export class WidgetProcessController {
       const processWidgetObj = createWidget(widgetObj);
       this._store.process.widgets.push(processWidgetObj);
 
-      processWidgetObj.ref?.on("close", () => {
-        this._store.process.widgets = this._store.process.widgets.filter(
-          (widget) => widget.id !== processWidgetObj.id
-        );
-        this.notificate();
-      });
-
-      processWidgetObj.ref?.on("move", () => {
-        const widget: IWidget = this._store.process.widgets.find(
-          (widget) => widget.id === processWidgetObj.id
-        );
-        if (widget === undefined) return;
-        const position = widget.ref?.getPosition();
-        if (position && widget.parameters && widget.id) {
-          widget.parameters.position.x = position[0];
-          widget.parameters.position.y = position[1];
-          this.notificateWidget(widget.id, widget.parameters);
-        }
-      });
+      this.subscribeOnWindowEvents(processWidgetObj);
 
       this.notificate();
     });
@@ -137,38 +118,23 @@ export class WidgetProcessController {
         let findWidget: IWidget = this._store.process.widgets.find(
           (widget) => widget.id === widgetId
         );
-        
+
         if (findWidget === undefined) return;
         if (findWidget.parameters === undefined) return;
         if (findWidget.parameters.mode === "dev") return;
         if (findWidget.ref === undefined) return;
 
-        const widgetIndex: number = this._store.process.widgets.indexOf(findWidget);
-        
+        const widgetIndex: number =
+          this._store.process.widgets.indexOf(findWidget);
+        const previousWidgetId = findWidget.id;
+
         const devWidget = createDevWidget(findWidget);
         this._store.process.widgets.splice(widgetIndex, 0, devWidget);
         findWidget.ref.close();
+        devWidget.id = previousWidgetId;
         this.notificate();
-
-        devWidget.ref?.on("close", () => {
-          this._store.process.widgets = this._store.process.widgets.filter(
-            (widget) => widget.id !== devWidget.id
-          );
-          this.notificate();
-        });
-
-        devWidget.ref?.on("move", () => {
-          const widget: IWidget = this._store.process.widgets.find(
-            (widget) => widget.id === devWidget.id
-          );
-          if (widget === undefined) return;
-          const position = widget.ref?.getPosition();
-          if (position && widget.parameters && widget.id) {
-            widget.parameters.position.x = position[0];
-            widget.parameters.position.y = position[1];
-            this.notificateWidget(widget.id, widget.parameters);
-          }
-        });
+        
+        this.subscribeOnWindowEvents(devWidget);
       });
     });
 
@@ -185,33 +151,40 @@ export class WidgetProcessController {
         if (findWidget.parameters.mode === "production") return;
         if (findWidget.ref === undefined) return;
 
-        const widgetIndex: number = this._store.process.widgets.indexOf(findWidget);
+        const widgetIndex: number =
+          this._store.process.widgets.indexOf(findWidget);
+        const previousWidgetId = findWidget.id;
 
         const prodWidget = createWidget(findWidget);
         this._store.process.widgets.splice(widgetIndex, 0, prodWidget);
         findWidget.ref.close();
+        prodWidget.id = previousWidgetId;
         this.notificate();
 
-        prodWidget.ref?.on("close", () => {
-          this._store.process.widgets = this._store.process.widgets.filter(
-            (widget) => widget.id !== prodWidget.id
-          );
-          this.notificate();
-        });
-
-        prodWidget.ref?.on("move", () => {
-          const widget: IWidget = this._store.process.widgets.find(
-            (widget) => widget.id === prodWidget.id
-          );
-          if (widget === undefined) return;
-          const position = widget.ref?.getPosition();
-          if (position && widget.parameters && widget.id) {
-            widget.parameters.position.x = position[0];
-            widget.parameters.position.y = position[1];
-            this.notificateWidget(widget.id, widget.parameters);
-          }
-        });
+        this.subscribeOnWindowEvents(prodWidget);
       });
+    });
+  }
+
+  private subscribeOnWindowEvents(propsWidget: IWidget): void {
+    propsWidget.ref?.on("close", () => {
+      this._store.process.widgets = this._store.process.widgets.filter(
+        (widget) => widget.id !== propsWidget.id
+      );
+      this.notificate();
+    });
+
+    propsWidget.ref?.on("move", () => {
+      const widget: IWidget = this._store.process.widgets.find(
+        (widget) => widget.id === propsWidget.id
+      );
+      if (widget === undefined) return;
+      const position = widget.ref?.getPosition();``
+      if (position && widget.parameters && widget.id) {
+        widget.parameters.position.x = position[0];
+        widget.parameters.position.y = position[1];
+        this.notificateWidget(widget.id, widget.parameters);
+      }
     });
   }
 
@@ -224,7 +197,7 @@ export class WidgetProcessController {
         return object;
       }),
     ];
-    
+
     HubNotificate(
       this._hubWindow,
       "listen-widgets-in-process",
