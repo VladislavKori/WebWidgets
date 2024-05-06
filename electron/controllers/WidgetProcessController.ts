@@ -41,12 +41,12 @@ export class WidgetProcessController {
       const processWidgetObj = createWidget(widgetObj);
       this._store.process.widgets.push(processWidgetObj);
 
-      // processWidgetObj.ref?.on("closed", () => {
-      //   this._store.process.widgets = this._store.process.widgets.filter(
-      //     (widget) => widget.id !== processWidgetObj.id
-      //   );
-      //   this.notificate();
-      // });
+      processWidgetObj.ref?.on("closed", () => {
+        this._store.process.widgets = this._store.process.widgets.filter(
+          (widget) => widget.id !== processWidgetObj.id
+        );
+        this.notificate();
+      });
 
       processWidgetObj.ref?.on("move", () => {
         const widget: IWidget = this._store.process.widgets.find(
@@ -132,6 +132,7 @@ export class WidgetProcessController {
 
     ipcMain.on("enable-dev-mode", (_, args: string) => {
       const { widgets }: { widgets: { id: string }[] } = JSON.parse(args);
+      console.log("enable-dev-mode")
       widgets.map((widget) => {
         const widgetId: string = widget.id;
         let findWidget: IWidget = this._store.process.widgets.find(
@@ -140,21 +141,82 @@ export class WidgetProcessController {
 
         if (findWidget === undefined) return;
         if (findWidget.parameters === undefined) return;
+        if (findWidget.parameters.mode === 'dev') return;
         if (findWidget.ref === undefined) return;
 
-        const devWidget = createDevWidget(findWidget)
         findWidget.ref.close();
-        findWidget.ref = devWidget.ref;
+        const devWidget = createDevWidget(findWidget)
+        this._store.process.widgets.push(devWidget);
 
-        this.notificateWidget(widgetId, findWidget.parameters);
+        devWidget.ref?.on("closed", () => {
+          this._store.process.widgets = this._store.process.widgets.filter(
+            (widget) => widget.id !== devWidget.id
+          );
+          this.notificate();
+        });
+
+        devWidget.ref?.on("move", () => {
+          const widget: IWidget = this._store.process.widgets.find(
+            (widget) => widget.id === devWidget.id
+          );
+          if (widget === undefined) return;
+          const position = widget.ref?.getPosition();
+          if (position && widget.parameters && widget.id) {
+            widget.parameters.position.x = position[0];
+            widget.parameters.position.y = position[1];
+            this.notificateWidget(widget.id, widget.parameters);
+          }
+        });
+
+        this.notificateWidget(widgetId, devWidget.parameters!);
       });
+
+      this.notificate();
     });
 
     ipcMain.on("disable-dev-mode", (_, args: string) => {
-      const { widgets }: { widgets: { id: string }[] | "all" } =
+      const { widgets }: { widgets: { id: string }[] } =
         JSON.parse(args);
-      console.log(widgets);
-      // find widget in process list
+      console.log("disable-dev-mode")
+      widgets.map((widget) => {
+        const widgetId: string = widget.id;
+        let findWidget: IWidget = this._store.process.widgets.find(
+          (widget) => widget.id === widgetId
+        );
+
+        if (findWidget === undefined) return;
+        if (findWidget.parameters === undefined) return;
+        if (findWidget.parameters.mode === "production") return;
+        if (findWidget.ref === undefined) return;
+
+        findWidget.ref.close();
+        const prodWidget = createWidget(findWidget)
+        this._store.process.widgets.push(prodWidget);
+
+        prodWidget.ref?.on("closed", () => {
+          this._store.process.widgets = this._store.process.widgets.filter(
+            (widget) => widget.id !== prodWidget.id
+          );
+          this.notificate();
+        });
+
+        prodWidget.ref?.on("move", () => {
+          const widget: IWidget = this._store.process.widgets.find(
+            (widget) => widget.id === prodWidget.id
+          );
+          if (widget === undefined) return;
+          const position = widget.ref?.getPosition();
+          if (position && widget.parameters && widget.id) {
+            widget.parameters.position.x = position[0];
+            widget.parameters.position.y = position[1];
+            this.notificateWidget(widget.id, widget.parameters);
+          }
+        });
+
+        this.notificateWidget(widgetId, prodWidget.parameters!);
+      });
+      
+      this.notificate();
     });
   }
 

@@ -4,7 +4,6 @@ import { BrowserWindow, ipcMain } from "electron";
 
 // @ts-ignore
 import { toBottom } from "electron-swd";
-import { getConfiguration, saveConfiguration } from "./SettingsService";
 import { IWidget } from "../../types/Widget";
 
 export function createWidget(params: IWidget): IWidget {
@@ -84,21 +83,19 @@ export const createDevWidget = (params: IWidget): IWidget => {
   });
 
   return {
-    id: id ? id : uniqid(),
+    id: uniqid(),
     widgetId: widgetId,
     folderPath: folderPath,
     ref: widgetWindow,
     config: config,
-    parameters: parameters
-      ? parameters
-      : {
-          locker: false,
-          mode: "dev",
-          position: {
-            x: widgetWindow.getPosition()[0],
-            y: widgetWindow.getPosition()[1],
-          },
-        },
+    parameters: {
+      locker: false,
+      mode: "dev",
+      position: {
+        x: widgetWindow.getPosition()[0],
+        y: widgetWindow.getPosition()[1],
+      },
+    },
   };
 };
 

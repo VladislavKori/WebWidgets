@@ -25,6 +25,7 @@ async function closeWidget() {
 
 const widgetIsLock = ref<boolean>(props.parameters?.locker || false);
 const widgetPosition = ref<{ x: number; y: number }>({ x: 0, y: 0 });
+const widgetWorkMode = ref<"dev" | "production">("production")
 function updateWidgetPosition(x: number, y: number) {
   widgetPosition.value = { x, y };
   window.ipcRenderer.send(
@@ -39,11 +40,13 @@ async function initPositionListner({ processId }: { processId: string }) {
       id: string;
       position: { x: number; y: number };
       locker: boolean;
+      mode: "dev" | "production"
     } = JSON.parse(args);
     if (value.id === processId) {
       widgetPosition.value = { x: value.position.x, y: value.position.y };
-      console.log(value.locker);
       widgetIsLock.value = value.locker;
+      console.log(value.mode)
+      widgetWorkMode.value = value.mode
     }
   });
 }
@@ -68,8 +71,21 @@ async function changeLockStatus() {
 async function enableDevMode() {
   await window.ipcRenderer.send(
     "enable-dev-mode",
-    JSON.stringify({ widgets: [{id: props.id}] })
+    JSON.stringify({ widgets: [{ id: props.id }] })
   );
+}
+
+async function disableDevMode() {
+  await window.ipcRenderer.send(
+    "disable-dev-mode",
+    JSON.stringify({ widgets: [{ id: props.id }] })
+  )
+}
+
+async function changeWorkMode() {
+  console.log(widgetWorkMode.value)
+  if (widgetWorkMode.value === "dev") await disableDevMode()
+  else if (widgetWorkMode.value === "production") await enableDevMode()
 }
 
 window.addEventListener("keydown", (e) => {
@@ -87,42 +103,30 @@ onMounted(async () => {
       y: props.parameters?.position.y,
     };
   }
+
+  if (props.parameters?.mode) {
+    widgetWorkMode.value = props.parameters.mode;
+  }
 });
 </script>
 
 <template>
   <div v-if="drawerIsOpen" :class="['inprocess-card__drawer']">
     <Collapse :title="config.name" :defaultValue="true">
-      <Input
-        type="number"
-        placeholder="X axis"
-        prefix="X"
-        :value="widgetPosition.x"
-        :onChange="event => updateWidgetPosition(parseInt((event.target as HTMLInputElement).value), widgetPosition.y)"
-      />
+      <Input type="number" placeholder="X axis" prefix="X" :value="widgetPosition.x"
+        :onChange="event => updateWidgetPosition(parseInt((event.target as HTMLInputElement).value), widgetPosition.y)" />
 
-      <Input
-        type="number"
-        placeholder="Y axis"
-        prefix="Y"
-        :value="widgetPosition.y"
-        :onChange="event => updateWidgetPosition(widgetPosition.x, parseInt((event.target as HTMLInputElement).value))"
-      />
+      <Input type="number" placeholder="Y axis" prefix="Y" :value="widgetPosition.y"
+        :onChange="event => updateWidgetPosition(widgetPosition.x, parseInt((event.target as HTMLInputElement).value))" />
 
       <div>
         <p>Lock</p>
-        <Switch
-          :onChange="changeLockStatus"
-          :defaultValue="parameters?.locker"
-        />
+        <Switch :onChange="changeLockStatus" :defaultValue="widgetIsLock" />
       </div>
 
       <div>
         <p>Dev Mode</p>
-        <Switch
-          :onChange="enableDevMode"
-          :defaultValue="parameters?.mode == 'dev'"
-        />
+        <Switch :onChange="changeWorkMode" :defaultValue="widgetWorkMode === 'dev'" />
       </div>
     </Collapse>
   </div>
@@ -135,12 +139,8 @@ onMounted(async () => {
       <button @click="closeWidget">close</button>
     </div>
     <div class="inprocess-card__right">
-      <button
-        class="inprocess-card__lock-btn"
-        :class="{ 'inprocess-card__lock-btn_active': parameters.locker }"
-        v-if="parameters?.locker"
-        @click="lockWidget"
-      >
+      <button class="inprocess-card__lock-btn" :class="{ 'inprocess-card__lock-btn_active': parameters.locker }"
+        v-if="parameters?.locker" @click="lockWidget">
         <UnlockCard class="inprocess-card__lock-icon" />
       </button>
       <!-- <button
