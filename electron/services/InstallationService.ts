@@ -1,16 +1,16 @@
-import { searchWidgetInFolder } from "./SearchService";
-import { SearchWidgetReturn } from "../../types/Installation";
+import { scanhWidgetFolders } from "./Scanner";
+import type { IWidget } from "../../types/Widget";
 import { getAllWidgetsFolderPaths } from "./FileServices";
 
 /**
  * Return widgets, who installed on PC
  */
-export function getInstalledWidgets(): SearchWidgetReturn[] {
-  const installedWidgets: SearchWidgetReturn[] = [];
+export function getInstalledWidgets(): IWidget[] {
+  const installedWidgets: IWidget[] = [];
   let paths: string[] = getAllWidgetsFolderPaths();
 
   paths.map((item: string) => {
-    installedWidgets.push(...searchWidgetInFolder(item));
+    installedWidgets.push(...scanhWidgetFolders(item));
   });
 
   return installedWidgets;

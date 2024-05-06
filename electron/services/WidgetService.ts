@@ -1,14 +1,14 @@
 import path from "node:path";
 import uniqid from "uniqid";
-import { BrowserWindow } from "electron";
-import { CreateWidgetReturn, ICreateWidget } from "../../types/Process";
+import { BrowserWindow, ipcMain } from "electron";
 
 // @ts-ignore
 import { toBottom } from "electron-swd";
 import { getConfiguration, saveConfiguration } from "./SettingsService";
+import { IWidget } from "../../types/Widget";
 
-export function createWidget(params: ICreateWidget): CreateWidgetReturn {
-  const { folderPath, config } = params;
+export function createWidget(params: IWidget): IWidget {
+  const { folderPath, config, widgetId, parameters } = params;
 
   const widgetWindow = new BrowserWindow({
     width: Number(config.window.width),
@@ -36,22 +36,29 @@ export function createWidget(params: ICreateWidget): CreateWidgetReturn {
 
   widgetWindow.loadFile(path.join(folderPath + config.window.entryFile));
 
-  if (params.position !== undefined) {
-    widgetWindow.setPosition(params.position[0], params.position[1]);
+  if (parameters && parameters.position) {
+    widgetWindow.setPosition(parameters.position.x, parameters.position.y);
   }
 
   return {
-    processId: uniqid(),
-    config,
-    lock: false,
-    folderPath,
-    isDevMode: false,
+    id: uniqid(),
+    widgetId: widgetId,
+    folderPath: folderPath,
     ref: widgetWindow,
+    config: config,
+    parameters: {
+      locker: false,
+      mode: "production",
+      position: {
+        x: widgetWindow.getPosition()[0],
+        y: widgetWindow.getPosition()[1],
+      },
+    },
   };
 }
 
-export const createDevWidget = (params: ICreateWidget): CreateWidgetReturn => {
-  const { folderPath, config } = params;
+export const createDevWidget = (params: IWidget): IWidget => {
+  const { folderPath, config, widgetId, parameters, id } = params;
 
   const widgetWindow = new BrowserWindow({
     width: Number(config.window.width),
@@ -66,9 +73,9 @@ export const createDevWidget = (params: ICreateWidget): CreateWidgetReturn => {
 
   widgetWindow.loadFile(path.join(folderPath + config.window.entryFile));
 
-  if (params.position !== undefined) {
-    widgetWindow.setPosition(params.position[0], params.position[1]);
-  }
+  // if (params.position !== undefined) {
+  //   widgetWindow.setPosition(params.position[0], params.position[1]);
+  // }
 
   widgetWindow.maximize();
 
@@ -77,44 +84,27 @@ export const createDevWidget = (params: ICreateWidget): CreateWidgetReturn => {
   });
 
   return {
-    processId: uniqid(),
-    config,
-    lock: false,
-    folderPath,
-    isDevMode: true,
+    id: id ? id : uniqid(),
+    widgetId: widgetId,
+    folderPath: folderPath,
     ref: widgetWindow,
+    config: config,
+    parameters: parameters
+      ? parameters
+      : {
+          locker: false,
+          mode: "dev",
+          position: {
+            x: widgetWindow.getPosition()[0],
+            y: widgetWindow.getPosition()[1],
+          },
+        },
   };
 };
 
-export const enableDevModeForWidget = (
-  widget: CreateWidgetReturn
-): CreateWidgetReturn => {
-  const position = widget.ref?.getPosition();
-  widget.ref?.close();
-  return createDevWidget({ ...widget, position });
-};
-
-export const disableDevModeForWidget = (
-  widget: CreateWidgetReturn
-): CreateWidgetReturn => {
-  const position = widget.ref?.getPosition();
-  widget.ref?.close();
-  return createWidget({ ...widget, position });
-};
-
-export function setDevMode(devMode: boolean) {
-  const config = getConfiguration();
-  config.widgets.devMode = devMode;
-  saveConfiguration(config);
-}
-
-export function getMode(): boolean {
-  const config = getConfiguration();
-  return config.widgets.devMode;
-}
-
-export function saveWidgetInConfig(widgets: Array<ICreateWidget>) {
-  const appConfig = getConfiguration();
-  appConfig.widgets.active = widgets;
-  saveConfiguration(appConfig);
-}
+// export function saveWidgetInConfig(widgets: Array<ICreateWidget>) {
+//   const appConfig = getConfiguration();
+//   appConfig.widgets.active = widgets;
+//   saveConfiguration(appConfig);
+// }
+1;

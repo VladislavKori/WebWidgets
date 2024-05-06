@@ -1,7 +1,6 @@
 import { existsSync, readFileSync, readdirSync, statSync } from "node:fs";
 import path from "node:path";
-import { SearchWidgetReturn } from "../../types/Installation";
-import { IWidgetConfig } from "../../types/global";
+import { IWidget, IWidgetConfig } from "../../types/Widget";
 import uniqid from "uniqid";
 
 /**
@@ -10,8 +9,8 @@ import uniqid from "uniqid";
  * @param folderPath - path to folder
  * @return {SearchWidgetReturn[]} - object {folderPath: string, config: IWidgetConfig}
  */
-export function searchWidgetInFolder(folderPath: string): SearchWidgetReturn[] {
-  const returnedWidgets: SearchWidgetReturn[] = [];
+export function scanhWidgetFolders(folderPath: string): IWidget[] {
+  const returnedWidgets: IWidget[] = [];
 
   // if find package json stop folder scan
   const widgetStartFile = path.join(folderPath, "index.json");
@@ -20,7 +19,7 @@ export function searchWidgetInFolder(folderPath: string): SearchWidgetReturn[] {
   // [algorithm] recursive folder scanning algorithm
   try {
     if (isExist) {
-      const widget: SearchWidgetReturn | null =
+      const widget: IWidget | null =
         readWidgetConfigureFile(folderPath);
 
       if (widget !== null) returnedWidgets.push(widget);
@@ -34,7 +33,7 @@ export function searchWidgetInFolder(folderPath: string): SearchWidgetReturn[] {
 
       dirs.map((item: string) => {
         returnedWidgets.push(
-          ...searchWidgetInFolder(path.join(folderPath, item))
+          ...scanhWidgetFolders(path.join(folderPath, item))
         );
       });
 
@@ -54,7 +53,7 @@ export function searchWidgetInFolder(folderPath: string): SearchWidgetReturn[] {
  */
 const readWidgetConfigureFile = (
   folderPath: string
-): SearchWidgetReturn | null => {
+): IWidget | null => {
   const fileContent: string = readFileSync(
     path.join(folderPath, "index.json"),
     "utf8"
@@ -64,7 +63,7 @@ const readWidgetConfigureFile = (
   if (!isValid || content === null) return null;
 
   return {
-    id: uniqid(),
+    widgetId: uniqid(),
     folderPath: folderPath,
     config: content,
   };

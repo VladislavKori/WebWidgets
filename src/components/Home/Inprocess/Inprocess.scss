@@ -2,11 +2,12 @@
   &__content {
     height: 40vh;
     display: flex;
-    flex-direction: column;
-    row-gap: 15px;
+    justify-content: space-between;
+    flex-wrap: wrap;
     overflow-y: auto;
     margin-top: 20px;
     padding-right: 10px;
+    height: calc(100vh - 150px);
 
     /* Firefox */
     & {

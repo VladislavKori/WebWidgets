@@ -1,71 +1,50 @@
-import { BrowserWindow, app } from "electron";
-import { createMainWindow } from "./services/AppService";
-import WidgetController from "./controllers/WidgetController";
-import ProcessController from "./controllers/ProcessController";
-import Store from "./controllers/StoreController";
-import { createTray } from "./utils/Tray";
-import SettingsController from "./controllers/SettingsController";
-import { InitAppByConfig } from "./utils/InitAppByConfig";
-import { ICreateWidget } from "../types/Process";
-import { saveWidgetInConfig } from "./services/WidgetService";
+import { app, BrowserWindow } from "electron";
+import { createHubWindow } from "./services/HubService";
+import { HubController } from "./controllers/HubController";
+import { WidgetManageController } from "./controllers/WidgetManageController";
+import { WidgetProcessController } from "./controllers/WidgetProcessController";
+import { IStore } from "../types/Store";
 
-// Init session store
-const store = new Store();
+class WebWidgetsApp {
+  private _hubWindow: BrowserWindow | undefined;
+  private _store: IStore = {
+    installed: {
+      widgets: [],
+    },
+    process: {
+      widgets: [],
+    },
+  };
 
-// Init controllers
-new WidgetController({ store }).init();
-new ProcessController({ store }).init();
-new SettingsController({ store }).init();
+  constructor() {
+    this.start();
+  }
 
-app.on("activate", () => {
-  if (BrowserWindow.getAllWindows().length === 0) {
-    createMainWindow((win: BrowserWindow) => {
-      store.mainWindow = win;
+  private start(): void {
+    app.whenReady().then(() => {
+      this._hubWindow = createHubWindow();
+
+      // controllers
+      new HubController({ hubWindow: this._hubWindow });
+      new WidgetManageController({
+        hubWindow: this._hubWindow,
+        store: this._store,
+      });
+      new WidgetProcessController({
+        hubWindow: this._hubWindow,
+        store: this._store,
+      });
+      
+
+      HubController.eventSecondInstance(this._hubWindow);
+
+      // for macos
+      HubController.eventWindowAllClosed();
+
+      // for macos
+      HubController.eventActivate(this._hubWindow);
     });
   }
-});
-
-app.on("window-all-closed", () => {
-  if (process.platform !== "darwin") {
-    app.quit();
-  }
-});
-
-const additionalData = { myKey: "hello-key" };
-const gotTheLock = app.requestSingleInstanceLock(additionalData);
-
-if (!gotTheLock) {
-  app.quit();
-} else {
-  app.on("second-instance", () => {
-    if (store.mainWindow !== null) {
-      if (store.mainWindow.isMinimized()) store.mainWindow.restore();
-      if (!store.mainWindow.isVisible()) store.mainWindow.show();
-      store.mainWindow.focus();
-    }
-  });
 }
 
-app.whenReady().then((_) => {
-  createMainWindow((win: BrowserWindow) => {
-    store.mainWindow = win;
-  });
-  createTray({ store });
-
-  // Init app settings
-  InitAppByConfig({ store });
-});
-
-app.on("before-quit", () => {
-  const widgets: Array<ICreateWidget> = store.widgetsInProcess.map(
-    (widgetConfig) => {
-      return {
-        config: widgetConfig.config,
-        folderPath: widgetConfig.folderPath,
-        position: widgetConfig.ref?.getPosition(),
-      };
-    }
-  );
-
-  saveWidgetInConfig(widgets);
-});
+const appInstance = new WebWidgetsApp();

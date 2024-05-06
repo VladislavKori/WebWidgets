@@ -8,11 +8,12 @@ import { getLanguage } from "./utils/LangFunc";
 import EN from "./locale/EN.json";
 import RU from "./locale/RU.json";
 
-getLanguage().then((language: string) => {
+getLanguage().then((language: string | undefined) => {
   const app = createApp(App);
 
   const i18n = createI18n({
-    locale: language,
+    legacy: false,
+    locale: language ? language : "en",
     messages: {
       en: EN,
       ru: RU,
@@ -23,10 +24,7 @@ getLanguage().then((language: string) => {
   app.use(Router);
 
   app.mount("#app").$nextTick(() => {
-    // Remove Preload scripts loading
     postMessage({ payload: "removeLoading" }, "*");
-
-    // Use contextBridge
     window.ipcRenderer.on("main-process-message", (_event, message) => {
       console.log(message);
     });

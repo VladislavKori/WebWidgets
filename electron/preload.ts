@@ -19,7 +19,7 @@ function withPrototype(obj: Record<string, any>) {
       obj[key] = value
     }
   }
-  return obj
+  return obj;
 }
 
 // --------- Preload scripts loading ---------

@@ -1,6 +1,6 @@
 import path, { dirname } from "path";
 import { existsSync, mkdirSync, readFileSync, writeFileSync } from "node:fs";
-import { IAppConfig } from "../../types/Configuration";
+import type { IAppConfiguration } from "../../types/AppConfiguration";
 import { app } from "electron";
 
 const isProdMode: boolean = import.meta.env.MODE === "production";
@@ -11,20 +11,16 @@ const configurationPath = path.join(
   "conf/app.config.json"
 );
 
-export function getConfiguration(): IAppConfig {
+export function getConfiguration(): IAppConfiguration {
   let value: string;
 
   try {
     value = readFileSync(configurationPath, "utf8");
   } catch (err) {
     saveConfiguration({
-      widgets: {
-        devMode: false,
-        active: [],
-      },
       autolunch: true,
       language: "en",
-      paths: [],
+      folders: [],
     });
 
     value = readFileSync(configurationPath, "utf8");
@@ -33,7 +29,7 @@ export function getConfiguration(): IAppConfig {
   return JSON.parse(value);
 }
 
-export function saveConfiguration(configuration: IAppConfig): void {
+export function saveConfiguration(configuration: IAppConfiguration): void {
   const value: string = JSON.stringify(configuration);
 
   const confDir = dirname(configurationPath)
@@ -58,7 +54,7 @@ export function addWidgetFolderPathToConfig(path: string): void {
   if (avaiblePaths.includes(path)) return;
 
   const config = getConfiguration();
-  config.paths.push(path);
+  config.folders.push(path);
 
   saveConfiguration(config);
 }
@@ -68,7 +64,7 @@ export function removeWidgetFolderPathFromConfig(path: string): void {
   if (!avaiblePaths.includes(path)) return;
 
   const config = getConfiguration();
-  config.paths = avaiblePaths.filter((p: string) => p !== path);
+  config.folders = avaiblePaths.filter((p: string) => p !== path);
 
   saveConfiguration(config);
 }

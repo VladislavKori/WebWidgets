@@ -10,6 +10,7 @@
   "dependencies": {
     "@rollup/plugin-commonjs": "^25.0.7",
     "@types/open-file-explorer": "^1.0.2",
+    "clsx": "^2.1.0",
     "electron-swd": "^1.0.0",
     "open-file-explorer": "^1.0.2",
     "sass": "^1.69.5",

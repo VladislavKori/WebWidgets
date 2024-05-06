@@ -1,44 +1,31 @@
-<script lang="ts">
-import { defineComponent, ref } from 'vue'
-import Toggle from '../../Elements/Toggle/Toggle.vue';
-import './ChangeMode.scss'
+<script lang="ts" setup>
+import {  onMounted, ref } from 'vue'
+import Switch from '../../UI/Switch/Switch.vue';
 
-export default defineComponent({
-    name: "ChangeMode",
-    components: { Toggle },
-    methods: {
-        enableDevMode() {
-            window.ipcRenderer.invoke("enable-dev-mode")
-        },
-        disableDevMode() {
-            window.ipcRenderer.invoke("disable-dev-mode")
-        },
-        changeMode() {
-            this.changeToggleState(!this.toggleState)
-            if (this.toggleState) this.enableDevMode();
-            else this.disableDevMode();
-        },
-        async getMode(): Promise<boolean> {
-            return await window.ipcRenderer.invoke("get-mode")
-        }
-    },
-    setup() {
-        let toggleState = ref(false);
+type IModes = "dev" | "default"
+const workMode = ref<IModes>('default');
+const modeLoading = ref<boolean>(false);
+function chagneMode(isActive: boolean) {
+    workMode.value = isActive ? 'dev' : 'default';
 
-        function changeToggleState(to: boolean): void {
-            toggleState.value = to;
-        }
+    if (workMode.value === "dev") window.ipcRenderer.invoke("enable-dev-mode")
+    else if (workMode.value === "default") window.ipcRenderer.invoke("disable-dev-mode")
+}
+function devModeisActive(): boolean {
+    return workMode.value === "dev";
+}
 
-        return {
-            toggleState,
-            changeToggleState
-        }
-    },
-    async mounted() {
-        this.changeToggleState(await this.getMode())
-    }
+async function getMode(): Promise<IModes> {
+    modeLoading.value = true;
+    const result: boolean = await window.ipcRenderer.invoke("get-mode")
+    if (result) return "dev"
+    else return "default"
+}
+
+onMounted(async () => {
+    workMode.value = await getMode();
+    modeLoading.value = false;
 })
-
 </script>
 
 <template>
@@ -47,7 +34,7 @@ export default defineComponent({
         <div class="changeMode__row">
             <p class="changeMode__text">{{ $t("texts.infoAboutDevMode") }}</p>
             <div>
-                <Toggle :value="toggleState" @changeState="changeMode" />
+                <Switch size="large" :onChange="chagneMode" :defaultValue="devModeisActive()" :loading="modeLoading" />
             </div>
         </div>
     </div>

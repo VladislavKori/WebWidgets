@@ -20,10 +20,6 @@ function withPrototype(obj: Record<string, any>) {
   return obj;
 }
 
-// contextBridge.exposeInMainWorld("os", {
-//   arch: window.ipcRenderer.invoke("os-arch"),
-// });
-
 contextBridge.exposeInMainWorld("os", {
   arch: async () => JSON.parse(await ipcRenderer.invoke("os-arch")),
   constants: async () => JSON.parse(await ipcRenderer.invoke("os-constants")),
